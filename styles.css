@@ -806,7 +806,7 @@ section h2 {
   overflow: hidden;
   background:
     linear-gradient(180deg, rgba(149, 169, 133, 0.3), rgba(76, 103, 87, 0.16)),
-    url("assets/report-page-03.jpg") center / cover;
+    url("/assets/report-page-03.webp") center / cover;
   background-blend-mode: screen, normal;
 }
 
