@@ -25,7 +25,7 @@ const markers = {
 
 const phases = [
   {
-    image: "/assets/report-page-20.jpg",
+    image: "/assets/report-page-20.webp",
     alt: "Master plan diagram showing the phased transformation of Karadiyana landfill",
     kicker: "Phase 01",
     title: "Control and Reduce",
@@ -37,7 +37,7 @@ const phases = [
     ]
   },
   {
-    image: "/assets/report-page-21.jpg",
+    image: "/assets/report-page-21.webp",
     alt: "Phased strategy diagrams showing ecological recovery and wetland drainage strategies",
     kicker: "Phase 02",
     title: "Ecological Recovery and Cooling",
@@ -49,7 +49,7 @@ const phases = [
     ]
   },
   {
-    image: "/assets/report-page-19.jpg",
+    image: "/assets/report-page-19.webp",
     alt: "Design concept sketch showing climate, social, and ecological relationships",
     kicker: "Phase 03",
     title: "Integration and Public Engagement",
@@ -61,7 +61,7 @@ const phases = [
     ]
   },
   {
-    image: "/assets/report-page-01.jpg",
+    image: "/assets/report-page-01.webp",
     alt: "Karadiyana landfill landscape with birds above the mound",
     kicker: "Future Vision",
     title: "Resilient and Adaptive Landscape",
@@ -187,7 +187,7 @@ function App() {
 
       <main id="top">
         <section className="hero section-dark" aria-labelledby="hero-title">
-          <img className="hero-image" src="/assets/report-page-01.jpg" alt="Karadiyana landfill mound with birds in the sky" />
+          <img className="hero-image" src="/assets/report-page-01.webp" alt="Karadiyana landfill mound with birds in the sky" />
           <div className="hero-vignette" />
           <Reveal className="hero-content">
             <p className="eyebrow">Karadiyana Landfill, Piliyandala</p>
@@ -280,7 +280,7 @@ function App() {
 
         <section className="site-section" id="site" aria-labelledby="site-title">
           <Reveal className="site-media">
-            <img src="/assets/report-page-15.jpg" alt="Site analysis map of Karadiyana landfill and surrounding community structure" />
+            <img src="/assets/report-page-15.webp" alt="Site analysis map of Karadiyana landfill and surrounding community structure" />
           </Reveal>
           <Reveal className="site-copy">
             <p className="eyebrow">Site Analysis</p>
@@ -387,9 +387,9 @@ function App() {
           </Reveal>
           <div className="strategy-grid">
             {[
-              ["/assets/report-page-05.jpg", "Reduce cool reuse project vision diagrams", "Reduce - Cool - Reuse", "Three actions guide the whole transformation from risk control to public landscape value."],
-              ["/assets/report-page-18.jpg", "Project formulation diagram linking landfill issues to ecological, climate, and social potentials", "Regenerative Community Forest", "Environmental degradation, social stress, and climate pressure are reframed as design potentials."],
-              ["/assets/report-page-21.jpg", "Phased strategy diagrams showing landfill stabilization, planting, wetlands, and community spaces", "Phased Implementation", "Each operation builds the conditions for the next: control, recovery, access, and stewardship."]
+              ["/assets/report-page-05.webp", "Reduce cool reuse project vision diagrams", "Reduce - Cool - Reuse", "Three actions guide the whole transformation from risk control to public landscape value."],
+              ["/assets/report-page-18.webp", "Project formulation diagram linking landfill issues to ecological, climate, and social potentials", "Regenerative Community Forest", "Environmental degradation, social stress, and climate pressure are reframed as design potentials."],
+              ["/assets/report-page-21.webp", "Phased strategy diagrams showing landfill stabilization, planting, wetlands, and community spaces", "Phased Implementation", "Each operation builds the conditions for the next: control, recovery, access, and stewardship."]
             ].map(([image, alt, title, text]) => (
               <article className="strategy reveal" key={title}>
                 <img src={image} alt={alt} />
@@ -410,8 +410,8 @@ function App() {
             </p>
           </Reveal>
           <Reveal className="map-stack">
-            <img className="map-base" src="/assets/report-page-10.jpg" alt="Context analysis map showing Karadiyana landfill in relation to Colombo and Horana routes" />
-            <img className="map-overlay" src="/assets/report-page-19.jpg" alt="Design philosophy and concept sketch for regrading the mosaics" />
+            <img className="map-base" src="/assets/report-page-10.webp" alt="Context analysis map showing Karadiyana landfill in relation to Colombo and Horana routes" />
+            <img className="map-overlay" src="/assets/report-page-19.webp" alt="Design philosophy and concept sketch for regrading the mosaics" />
           </Reveal>
         </section>
 
