@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 const markers = {
   heat: {
@@ -313,6 +313,8 @@ function App() {
   const [isMapExpanded, setIsMapExpanded] = useState(false);
   const [activeThingToDo, setActiveThingToDo] = useState(null);
   const [activeGallerySlide, setActiveGallerySlide] = useState(0);
+  const [isHeroVideoLoading, setIsHeroVideoLoading] = useState(true);
+  const heroVideoRef = useRef(null);
   const marker = markers[activeMarker];
   const phase = phases[activePhase];
 
@@ -348,16 +350,45 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const heroMedia = document.querySelector(".hero-media");
+    const heroBackground = document.querySelector(".hero-background");
     const moveHero = () => {
-      if (!heroMedia) return;
+      if (!heroBackground) return;
       const offset = Math.min(window.scrollY * 0.08, 42);
-      heroMedia.style.transform = `scale(1.03) translateY(${offset}px)`;
+      heroBackground.style.transform = `scale(1.03) translateY(${offset}px)`;
     };
 
     moveHero();
     window.addEventListener("scroll", moveHero, { passive: true });
     return () => window.removeEventListener("scroll", moveHero);
+  }, []);
+
+  useEffect(() => {
+    const video = heroVideoRef.current;
+    if (!video) return undefined;
+
+    const markReady = () => setIsHeroVideoLoading(false);
+    const markLoading = () => setIsHeroVideoLoading(true);
+
+    video.addEventListener("loadeddata", markReady);
+    video.addEventListener("canplay", markReady);
+    video.addEventListener("playing", markReady);
+    video.addEventListener("waiting", markLoading);
+    video.addEventListener("stalled", markLoading);
+    video.addEventListener("error", markLoading);
+
+    const playPromise = video.play();
+    if (playPromise?.catch) {
+      playPromise.catch(() => {});
+    }
+
+    return () => {
+      video.removeEventListener("loadeddata", markReady);
+      video.removeEventListener("canplay", markReady);
+      video.removeEventListener("playing", markReady);
+      video.removeEventListener("waiting", markLoading);
+      video.removeEventListener("stalled", markLoading);
+      video.removeEventListener("error", markLoading);
+    };
   }, []);
 
   useEffect(() => {
@@ -431,23 +462,29 @@ function App() {
 
       <main id="top">
         <section className="hero section-dark" aria-labelledby="hero-title">
-          <video
-            className="hero-media hero-video"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            poster="/assets/report-page-01.webp"
-            aria-hidden="true"
-          >
-            <source src="/assets/hero-video.mp4" type="video/mp4" />
-          </video>
+          <div className="hero-background" aria-hidden="true">
+            <video
+              ref={heroVideoRef}
+              className="hero-media hero-video"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+            >
+              <source src="/assets/hero-video-av1.mp4" type='video/mp4; codecs="av01.0.05M.08"' />
+              <source src="/assets/hero-video.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div className={`hero-loader ${isHeroVideoLoading ? "active" : ""}`} aria-hidden="true">
+            <span className="hero-loader-ring" />
+            <span className="hero-loader-text">Loading landscape</span>
+          </div>
           <div className="hero-vignette" />
           <Reveal className="hero-content">
-            <p className="eyebrow">Karadiyana Landfill, Piliyandala</p>
-            <h1 id="hero-title">Regrounding the Landfill</h1>
-            <p className="hero-subtitle">Transforming waste ground into a resilient landscape.</p>
+            <p className="eyebrow">Karadiyana, Piliyandala</p>
+            <h1 id="hero-title">Community Forest Park</h1>
+            <p className="hero-subtitle">Regrounding the landfill.</p>
             <div className="hero-actions">
               <a className="button button-primary" href="#about">Explore the project</a>
               <a className="button button-secondary" href="/212920A%20-%20Report%20Submission_56c3db2afdf1e5737a1a73f453a2ec9c.pdf">
@@ -477,7 +514,8 @@ function App() {
           </Reveal>
           <Reveal className="project-overview">
             <img
-              src="/assets/report-page-18.webp"
+              className="project-overview-formulation"
+              src="/assets/formulation.webp"
               alt="Project formulation diagram for transforming Karadiyana landfill into a regenerative community forest"
               loading="lazy"
               decoding="async"
@@ -485,9 +523,19 @@ function App() {
             <div className="project-overview-panel">
               <span>Karadiyana Regeneration Framework</span>
               <p>
-                A landscape architecture proposal for transforming landfill pressure into ecological,
-                climatic, educational, and social value.
+                The project shifts waste landscapes from degraded and isolated zones into productive,
+                resilient, and interconnected ecological systems that support both nature and community.
               </p>
+              <p className="project-overview-detail">
+                Guided by the concept of "Regrounding the Natural Mosaics," the design responds through
+                landscape architectural strategies that integrate mitigation, adaptation, and spatial
+                experience.
+              </p>
+              <ul className="project-overview-list" aria-label="Project formulation objectives">
+                <li>Improving ecological systems</li>
+                <li>Enhancing climate performance</li>
+                <li>Strengthening community interaction</li>
+              </ul>
             </div>
           </Reveal>
           <div className="project-sections" aria-label="Project sections">
