@@ -43,7 +43,8 @@ body {
 }
 
 body.nav-open,
-body.map-expanded {
+body.map-expanded,
+body.activity-open {
   overflow: hidden;
 }
 
@@ -148,18 +149,22 @@ a {
   overflow: hidden;
 }
 
-.hero-image,
+.hero-media,
 .hero-vignette {
   position: absolute;
   inset: 0;
 }
 
-.hero-image {
+.hero-media {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transform: scale(1.03);
   filter: saturate(0.9) contrast(1.05);
+}
+
+.hero-video {
+  background: var(--deep-green);
 }
 
 .hero-vignette {
@@ -879,15 +884,21 @@ section h2 {
 }
 
 .pillar {
+  position: relative;
   min-height: 390px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   padding: clamp(24px, 4vw, 42px);
+  border: 0;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.8)),
     var(--paper);
   overflow: hidden;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
 }
 
 .pillar::before {
@@ -933,6 +944,40 @@ section h2 {
     rgba(149, 169, 133, 0.18);
 }
 
+.pillar:hover,
+.pillar:focus-visible {
+  transform: translateY(-6px) scale(1.01);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.9)),
+    var(--paper);
+  box-shadow: 0 18px 42px rgba(36, 39, 36, 0.12);
+  outline: none;
+}
+
+.pillar-cta {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  transform: translateY(-6px);
+  padding: 8px 10px;
+  border: 1px solid rgba(43, 75, 47, 0.16);
+  border-radius: 999px;
+  color: var(--deep-green);
+  background: rgba(255, 255, 255, 0.82);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  transition: opacity 180ms ease, transform 180ms ease, background 180ms ease;
+  pointer-events: none;
+}
+
+.pillar:hover .pillar-cta,
+.pillar:focus-visible .pillar-cta {
+  transform: translateY(0);
+  opacity: 1;
+}
+
 .pillar-number {
   color: var(--bark);
   font-size: 0.8rem;
@@ -960,6 +1005,122 @@ section h2 {
 .history-section,
 .terrain-lab {
   padding: clamp(72px, 9vw, 132px) clamp(18px, 5vw, 72px);
+}
+
+.activity-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  display: grid;
+  place-items: center;
+  padding: clamp(16px, 3vw, 32px);
+  background: rgba(22, 36, 26, 0.78);
+  backdrop-filter: blur(14px);
+}
+
+.activity-lightbox-panel {
+  position: relative;
+  width: min(1240px, 100%);
+  max-height: 92vh;
+  display: grid;
+  grid-template-columns: minmax(280px, 0.7fr) minmax(0, 1.3fr);
+  gap: clamp(16px, 2vw, 24px);
+  padding: clamp(18px, 2.5vw, 28px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(243, 241, 236, 0.98), rgba(243, 241, 236, 0.95)),
+    var(--paper);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.34);
+  overflow: hidden;
+}
+
+.activity-lightbox-copy {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  min-height: 0;
+  padding-right: 10px;
+  overflow: auto;
+}
+
+.activity-lightbox-number {
+  display: inline-flex;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--deep-green);
+  background: rgba(149, 169, 133, 0.18);
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.activity-lightbox-kicker {
+  margin: 0;
+  color: var(--bark);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.activity-lightbox-copy h3 {
+  margin: 0;
+  color: var(--deep-green);
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 0.96;
+}
+
+.activity-lightbox-copy p {
+  margin: 0;
+  color: var(--charcoal);
+}
+
+.activity-lightbox-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  min-height: 0;
+}
+
+.activity-lightbox-figure {
+  min-height: 0;
+  margin: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(202, 202, 202, 0.28);
+  box-shadow: 0 14px 32px rgba(36, 39, 36, 0.1);
+}
+
+.activity-lightbox-figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.activity-lightbox-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 1;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid rgba(76, 103, 87, 0.18);
+  border-radius: 999px;
+  color: var(--deep-green);
+  background: rgba(149, 169, 133, 0.18);
+  font: inherit;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.activity-lightbox-close:hover,
+.activity-lightbox-close:focus-visible {
+  background: rgba(149, 169, 133, 0.34);
+  outline: none;
 }
 
 .history-top {
@@ -1666,14 +1827,34 @@ section h2 {
 }
 
 .terrain-stage {
-  position: relative;
-  min-height: 520px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.72fr);
+  align-items: stretch;
+  height: 620px;
   border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 8px;
+  border-radius: 16px;
   overflow: hidden;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.01)),
     var(--blue-green);
+}
+
+.terrain-canvas {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 24% 18%, rgba(255, 255, 255, 0.16), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.01)),
+    var(--blue-green);
+}
+
+.terrain-canvas::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 72%, rgba(22, 36, 26, 0.22));
+  pointer-events: none;
 }
 
 .terrain-svg {
@@ -1759,16 +1940,17 @@ section h2 {
 }
 
 .marker-card {
-  position: absolute;
-  bottom: 26px;
-  right: 26px;
-  z-index: 2;
-  width: min(330px, calc(100% - 52px));
-  padding: 22px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  background: rgba(243, 241, 236, 0.94);
-  box-shadow: var(--shadow);
+  position: relative;
+  z-index: 1;
+  align-self: stretch;
+  min-height: 0;
+  padding: 28px 24px;
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  background:
+    linear-gradient(180deg, rgba(243, 241, 236, 0.97), rgba(243, 241, 236, 0.93)),
+    var(--paper);
+  box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.08);
+  overflow: auto;
 }
 
 .marker-card span,
@@ -1777,6 +1959,41 @@ section h2 {
   font-size: 0.78rem;
   font-weight: 900;
   text-transform: uppercase;
+}
+
+.marker-section {
+  margin-top: 18px;
+}
+
+.marker-section h4 {
+  margin: 0 0 10px;
+  color: var(--deep-green);
+  font-size: 0.9rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.marker-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.marker-list li {
+  color: var(--charcoal);
+}
+
+.marker-list strong {
+  color: var(--deep-green);
+  font-size: 0.95rem;
+}
+
+.marker-list p {
+  margin-top: 4px;
+  font-size: 0.92rem;
+  line-height: 1.5;
 }
 
 .phase-explorer {
@@ -1922,37 +2139,62 @@ section h2 {
   background: var(--leaf);
 }
 
-.strategy-grid {
+.gallery-slider {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
 }
 
-.strategy {
-  background: rgba(255, 255, 255, 0.58);
+.gallery-slider-frame {
+  position: relative;
+  min-height: clamp(420px, 62vw, 760px);
   border: 1px solid rgba(69, 69, 69, 0.14);
-  border-radius: 8px;
+  border-radius: 18px;
   overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(243, 241, 236, 0.64), rgba(243, 241, 236, 0.4)),
+    rgba(243, 241, 236, 0.92);
+  box-shadow: var(--shadow);
 }
 
-.strategy img {
+.gallery-slide {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  aspect-ratio: 1.42;
-  object-fit: cover;
-  filter: saturate(0.92);
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transform: scale(1.01);
+  transition: opacity 520ms ease, transform 520ms ease;
 }
 
-.strategy h3,
-.strategy p {
-  padding-inline: 22px;
+.gallery-slide.active {
+  opacity: 1;
+  transform: scale(1);
 }
 
-.strategy h3 {
-  margin-top: 22px;
+.gallery-slider-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }
 
-.strategy p {
-  padding-bottom: 26px;
+.gallery-slider-dot {
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(76, 103, 87, 0.22);
+  cursor: pointer;
+  transition: transform 180ms ease, background 180ms ease;
+}
+
+.gallery-slider-dot.active,
+.gallery-slider-dot:hover,
+.gallery-slider-dot:focus-visible {
+  transform: scale(1.12);
+  background: var(--deep-green);
+  outline: none;
 }
 
 .immersive-map {
@@ -2135,6 +2377,14 @@ section h2 {
     min-height: 260px;
   }
 
+  .activity-lightbox-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .activity-lightbox-gallery {
+    min-height: 300px;
+  }
+
   .metric-strip,
   .pillar-grid,
   .strategy-grid,
@@ -2263,6 +2513,35 @@ section h2 {
     align-items: flex-end;
   }
 
+  .activity-lightbox {
+    padding: 12px;
+  }
+
+  .activity-lightbox-panel {
+    max-height: 94vh;
+    gap: 14px;
+    padding: 16px;
+  }
+
+  .activity-lightbox-copy {
+    padding-right: 0;
+  }
+
+  .activity-lightbox-gallery {
+    grid-template-columns: 1fr;
+    min-height: 360px;
+  }
+
+  .activity-lightbox-figure {
+    min-height: 180px;
+  }
+
+  .activity-lightbox-close {
+    position: static;
+    justify-self: start;
+    margin-bottom: 4px;
+  }
+
   .learn-banner-copy {
     max-width: 100%;
     padding-right: clamp(18px, 5vw, 72px);
@@ -2317,7 +2596,13 @@ section h2 {
   }
 
   .terrain-stage {
-    min-height: 520px;
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .terrain-canvas {
+    height: 420px;
+    min-height: 420px;
   }
 
   .map-embed iframe {
@@ -2334,11 +2619,10 @@ section h2 {
   }
 
   .marker-card {
-    left: 16px;
-    right: 16px;
-    top: auto;
-    bottom: 16px;
-    width: auto;
+    max-height: 420px;
+    min-height: 0;
+    border-left: 0;
+    border-top: 1px solid rgba(69, 69, 69, 0.12);
   }
 
   .hotspot {
