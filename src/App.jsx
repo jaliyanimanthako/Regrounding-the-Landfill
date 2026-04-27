@@ -27,37 +27,37 @@ const phases = [
   {
     image: "/assets/report-page-20.webp",
     alt: "Master plan diagram showing the phased transformation of Karadiyana landfill",
-    kicker: "Phase 01",
-    title: "Control and Reduce",
-    text: "Stabilize the landfill through material separation, gas control, leachate treatment, compression, cut-and-fill operations, and structured recycling facilities.",
+    kicker: "Present (2026-2028)",
+    title: "Existing Condition",
+    text: "Stabilizing the landfill and controlling environmental impacts through cut-and-fill operations, improved slope stability, better soil conditions, and the formation of a basic surface.",
     items: [
-      "Organized material separation zones",
-      "Emission pipes and ventilation",
-      "Landform stabilization and surface treatment"
+      "Early engagement of surrounding communities",
+      "Opportunities to participate as workers in waste management",
+      "Participation in site improvement activities"
     ]
   },
   {
     image: "/assets/report-page-21.webp",
     alt: "Phased strategy diagrams showing ecological recovery and wetland drainage strategies",
     kicker: "Phase 02",
-    title: "Ecological Recovery and Cooling",
-    text: "Introduce phytocapping, reinforced slopes, drainage systems, wetland filtration, and medium-scale planting to create the first stable ecological layer.",
+    title: "Ecological Recovery and Growth",
+    text: "Planting strategies, wetland restoration, and habitat improvement shape the next stage of ecological recovery across the site.",
     items: [
-      "Phytocapping to stabilize surfaces",
-      "Constructed wetlands for filtration",
-      "Planting to initiate ecological succession"
+      "Community participation in maintenance",
+      "Active roles in planting programs",
+      "Ongoing monitoring activities"
     ]
   },
   {
     image: "/assets/report-page-19.webp",
     alt: "Design concept sketch showing climate, social, and ecological relationships",
     kicker: "Phase 03",
-    title: "Integration and Public Engagement",
-    text: "Bring people into the recovered ground through controlled access, community forest trails, learning spaces, and public-private management structures.",
+    title: "Community Forest",
+    text: "Trails, open spaces, and learning areas are introduced so people can experience ecological systems, biodiversity, and the visible transformation of the site.",
     items: [
-      "Controlled public forest trails",
-      "Community learning and stewardship spaces",
-      "Management roles for surrounding communities"
+      "Community members become part of the management structure",
+      "Shared roles in site operations",
+      "Stewardship of trails, learning areas, and public space"
     ]
   },
   {
@@ -65,11 +65,11 @@ const phases = [
     alt: "Karadiyana landfill landscape with birds above the mound",
     kicker: "Future Vision",
     title: "Resilient and Adaptive Landscape",
-    text: "The landfill evolves into a self-sustaining landscape where ecological processes, monitoring, and community ownership keep the site responsive.",
+    text: "The long-term vision is a self-sustaining and resilient landscape where the project continues to evolve through ecological performance and adaptive care.",
     items: [
-      "Long-term ecological monitoring",
-      "Adaptive maintenance and planting",
-      "Continuous community ownership"
+      "Strong community ownership",
+      "Continuous care",
+      "Ongoing adaptation"
     ]
   }
 ];
@@ -84,6 +84,36 @@ const navItems = [
   { label: "News", id: "news" },
   { label: "Future", id: "future" }
 ];
+
+const wasteCollectionData = [
+  { label: "Dehiwala - Mt. Lavinia MC", value: 179, color: "#c1ae92" },
+  { label: "Moratuwa MC", value: 126, color: "#9cb07b" },
+  { label: "Sri Jayawardenepura MC", value: 37, color: "#95a985" },
+  { label: "Boralesgamuwa UC", value: 30, color: "#d8c46b" },
+  { label: "Kesbewa UC", value: 47, color: "#4c6757" },
+  { label: "Maharagama UC", value: 75, color: "#7b6246" },
+  { label: "Homagama PS", value: 32, color: "#6f8660" }
+];
+
+const wasteCollectionTotal = wasteCollectionData.reduce((sum, item) => sum + item.value, 0);
+
+const wasteCollectionBreakdown = wasteCollectionData.map((item) => ({
+  ...item,
+  share: (item.value / wasteCollectionTotal) * 100
+}));
+
+const wasteCollectionChart = (() => {
+  let currentAngle = 0;
+
+  return `conic-gradient(${wasteCollectionBreakdown
+    .map(({ color, share }) => {
+      const start = currentAngle;
+      const end = currentAngle + share * 3.6;
+      currentAngle = end;
+      return `${color} ${start}deg ${end}deg`;
+    })
+    .join(", ")})`;
+})();
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -138,7 +168,7 @@ function Reveal({ children, className = "", as: Component = "div", ...props }) {
 function App() {
   const [activeMarker, setActiveMarker] = useState("heat");
   const [activePhase, setActivePhase] = useState(0);
-  const [imageSwitching, setImageSwitching] = useState(false);
+  const [isMapExpanded, setIsMapExpanded] = useState(false);
   const marker = markers[activeMarker];
   const phase = phases[activePhase];
 
@@ -158,6 +188,10 @@ function App() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("is-visible");
+            const ring = entry.target.querySelector(".history-chart-ring");
+            if (ring) {
+              window.setTimeout(() => ring.classList.add("chart-loaded"), 300);
+            }
             observer.unobserve(entry.target);
           }
         });
@@ -199,12 +233,26 @@ function App() {
     return () => window.clearTimeout(timerId);
   }, []);
 
+  useEffect(() => {
+    document.body.classList.toggle("map-expanded", isMapExpanded);
+    return () => document.body.classList.remove("map-expanded");
+  }, [isMapExpanded]);
+
+  useEffect(() => {
+    if (!isMapExpanded) return undefined;
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setIsMapExpanded(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isMapExpanded]);
+
   const changePhase = (index) => {
-    setImageSwitching(true);
-    window.setTimeout(() => {
-      setActivePhase(index);
-      setImageSwitching(false);
-    }, 180);
+    setActivePhase(index);
   };
 
   return (
@@ -350,16 +398,16 @@ function App() {
             </section>
 
             <section className="project-designer reveal">
-              <div className="designer-showcase">
-                <div className="designer-copy">
-                  <div className="designer-heading-row">
+              <div className="designer-grid">
+                <div className="designer-left">
+                  <div className="designer-label">
                     <span>03</span>
                     <p>The Designer</p>
                   </div>
                   <span className="designer-tag">Design Student Portfolio</span>
                   <h3>Landscape as responsibility.</h3>
-                  <p>
-                    Jayanetti D. A. N. K develops this proposal as a Comprehensive Design Project for the
+                  <p className="designer-body-text">
+                    <span className="designer-name">Nethma Jayanetti</span> develops this proposal as a Comprehensive Design Project for the
                     Bachelor of Landscape Architecture Honours program at the University of Moratuwa. The
                     design position treats Karadiyana as environmental repair, public memory, and future
                     community infrastructure.
@@ -368,32 +416,30 @@ function App() {
                     The work connects research, mapping, systems thinking, and landscape imagination into
                     one proposal for a place that is usually seen only as waste ground.
                   </p>
-                  <div className="designer-profile">
-                    <div>
-                      <strong>Focus</strong>
-                      <span>Landfill recovery, climate adaptation, ecological succession, community learning, and public landscape value.</span>
-                    </div>
-                    <div>
-                      <strong>Method</strong>
-                      <span>Site analysis, phased planning, hydrological thinking, planting strategy, access control, and long-term care systems.</span>
-                    </div>
-                    <div>
-                      <strong>Role</strong>
-                      <span>Translate technical landfill problems into spatial experiences that people can understand, use, maintain, and learn from.</span>
-                    </div>
+                  <div className="designer-attrs">
+                    {[
+                      ["Focus", "Landfill recovery, climate adaptation, ecological succession, community learning, and public landscape value."],
+                      ["Method", "Site analysis, phased planning, hydrological thinking, planting strategy, access control, and long-term care systems."],
+                      ["Role", "Translate technical landfill problems into spatial experiences that people can understand, use, maintain, and learn from."]
+                    ].map(([label, text]) => (
+                      <div className="designer-attr" key={label}>
+                        <strong>{label}</strong>
+                        <span>{text}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
-                <figure className="designer-portrait">
-                  <div className="designer-photo-frame">
+                <figure className="designer-figure">
+                  <div className="designer-photo-wrap">
                     <img
                       src="/assets/designer-photo.webp"
-                      alt="Portrait of Jayanetti D. A. N. K"
+                      alt="Portrait of Nethma Jayanetti"
                       loading="lazy"
                       decoding="async"
                     />
                   </div>
                   <figcaption>
-                    <strong>Jayanetti D. A. N. K</strong>
+                    <strong>Nethma Jayanetti</strong>
                     <span>BLA Honours, University of Moratuwa</span>
                   </figcaption>
                 </figure>
@@ -402,53 +448,105 @@ function App() {
           </div>
         </section>
 
-        <section className="context-panel section-dark" id="history" aria-labelledby="history-title">
-          <Reveal className="context-copy">
-            <p className="eyebrow">History</p>
-            <h2 id="history-title">From waste ground to energy promise</h2>
-            <p>
-              Karadiyana is also known through the Colombo South Waste Processing Facility, referred to as
-              the Karadiyana W2E Project or Karadiyana Power Station. Its recent history connects landfill
-              pressure, waste-to-energy ambition, private operation, and public environmental concern.
-            </p>
-            <p>
-              The facility was planned as a municipal solid waste-fired thermal power station on a 10-acre
-              site, with construction beginning on 23 August 2017. The proposal linked 500 metric tons of
-              daily waste intake with a 10 MW generation target, reframing waste as both an energy resource
-              and a landscape burden.
-            </p>
-          </Reveal>
-          <div className="history-panel" aria-label="Karadiyana project history">
-            <article className="history-feature reveal">
-              <span>2017</span>
-              <h3>Waste-to-energy works begin</h3>
+        <section className="history-section section-dark" id="history" aria-labelledby="history-title">
+          <div className="history-top">
+            <Reveal className="context-copy">
+              <p className="eyebrow">History</p>
+              <h2 id="history-title">From open dumping ground to metropolitan landfill</h2>
               <p>
-                Construction began after the project was selected through the Urban Development Authority
-                bid process. Fairway Waste Management was identified as operator, with Fairway Holdings as
-                owner.
+                The Karadiyana Landfill at Thumbowila within the Kesbewa Divisional Secretariat Division in
+                Colombo District has functioned as a principal municipal solid waste disposal site for the
+                Colombo Metropolitan Region since the early 1990s.
               </p>
+              <p>
+                It was selected during a period of rapid urban expansion when surrounding local authorities
+                needed a centralized location to absorb growing waste volumes from urban and peri-urban
+                settlements. The site initially operated as an open dumping ground under local government
+                administration, including Kesbewa and Boralesgamuwa.
+              </p>
+              <p>
+                Because the ground developed without engineered containment, segregation systems, or formal
+                environmental management, waste accumulated incrementally in layered mounds through the 1990s
+                and early 2000s as population, urbanization, and consumption increased across greater Colombo.
+              </p>
+            </Reveal>
+            <Reveal className="history-era-card">
+              <img
+                className="history-era-image"
+                src="/assets/history.webp"
+                alt="Karadiyana landfill history landscape"
+                loading="lazy"
+                decoding="async"
+              />
+              <div className="history-era-decade" aria-hidden="true">90s</div>
+              <span className="history-era-badge">Early 1990s</span>
+              <h3>A 40-acre landfill grows with the city</h3>
+              <p>
+                Throughout the 1990s and early 2000s, Karadiyana received mixed municipal waste and, at
+                times, commercial and industrial waste with minimal long-term planning. Continuous
+                depositing, spreading, and compaction gradually formed the large waste mounds that define
+                the site today.
+              </p>
+            </Reveal>
+          </div>
+
+          <Reveal className="history-stats-strip" aria-label="Key statistics">
+            {[
+              ["40 acres", "Karadiyana site area"],
+              ["Early 1990s", "principal disposal role begins"],
+              ["526 MT/day", "listed daily waste collection"],
+              ["7 local bodies", "feeding the landfill system"]
+            ].map(([value, label]) => (
+              <article className="history-stat" key={label}>
+                <strong>{value}</strong>
+                <span>{label}</span>
+              </article>
+            ))}
+          </Reveal>
+
+          <div className="history-bottom">
+            <article className="history-chart reveal" aria-labelledby="history-chart-title">
+              <div
+                className="history-chart-ring"
+                style={{ "--chart-fill": wasteCollectionChart }}
+                aria-hidden="true"
+              >
+                <div className="history-chart-center">
+                  <strong>{wasteCollectionTotal}</strong>
+                  <span>MT per day</span>
+                </div>
+              </div>
+              <div className="history-chart-copy">
+                <h3 id="history-chart-title">Waste collection per day by local authority</h3>
+                <p>
+                  By the mid-2000s, Karadiyana had become a key disposal site serving multiple local
+                  authorities across the greater Colombo edge.
+                </p>
+                <ul className="history-chart-list">
+                  {wasteCollectionBreakdown.map((item) => (
+                    <li className="history-chart-item" key={item.label}>
+                      <span
+                        className="history-chart-swatch"
+                        style={{ "--swatch": item.color }}
+                        aria-hidden="true"
+                      />
+                      <span className="history-chart-label">{item.label}</span>
+                      <strong>{item.value} MT</strong>
+                      <span className="history-chart-share">{item.share.toFixed(1)}%</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </article>
-            <div className="history-facts">
-              {[
-                ["10 acres", "Karadiyana site area"],
-                ["10 MW", "planned generation capacity"],
-                ["500 MT/day", "municipal solid waste intake"],
-                ["$91M", "estimated 2017 project cost"]
-              ].map(([value, label]) => (
-                <article className="history-fact reveal" key={label}>
-                  <strong>{value}</strong>
-                  <span>{label}</span>
-                </article>
-              ))}
-            </div>
             <div className="history-notes reveal">
               <p>
-                The scheme described bottom ash reuse for road construction and other applications, while
-                unusable fly ash was to be disposed of at designated locations.
+                The absence of structured landfill engineering meant waste was accepted and layered over
+                time with limited control, making Karadiyana one of the region&apos;s most visible examples of
+                unmanaged metropolitan expansion.
               </p>
               <p>
-                This design project reads that industrial history as unfinished ground: a place where
-                technical systems, ecological repair, and public memory need to be planned together.
+                This project treats that history as unfinished ground, where environmental repair, public
+                memory, and future landscape stewardship need to be planned together.
               </p>
             </div>
           </div>
@@ -481,30 +579,46 @@ function App() {
           </div>
         </section>
 
-        <section className="site-section" id="learn-with-us" aria-labelledby="learn-title">
-          <Reveal className="site-media">
+        <section className="learn-section" id="learn-with-us" aria-labelledby="learn-title">
+          <Reveal className="learn-banner">
             <img
-              src="/assets/report-page-15.webp"
+              className="learn-banner-img"
+              src="/assets/learn.webp"
               alt="Site analysis map of Karadiyana landfill and surrounding community structure"
               loading="lazy"
               decoding="async"
             />
+            <div className="learn-banner-veil" aria-hidden="true" />
+            <div className="learn-banner-copy">
+              <p className="eyebrow">Learn With Us</p>
+              <h2 id="learn-title">Read the ground like an open classroom</h2>
+              <p>
+                The project turns technical landfill recovery into public knowledge. Students, residents,
+                researchers, and visitors can learn how waste systems, water, heat, planting, and community
+                stewardship connect inside one landscape.
+              </p>
+            </div>
           </Reveal>
-          <Reveal className="site-copy">
-            <p className="eyebrow">Learn With Us</p>
-            <h2 id="learn-title">Read the ground like an open classroom</h2>
-            <p>
-              The project turns technical landfill recovery into public knowledge. Students, residents,
-              researchers, and visitors can learn how waste systems, water, heat, planting, and community
-              stewardship connect inside one landscape.
-            </p>
-            <dl className="site-facts">
-              <div><dt>Field Walks</dt><dd>Guided routes explain landfill layers, wetland buffers, planting zones, and safe public access.</dd></div>
-              <div><dt>Flora and Fauna</dt><dd>Observe pioneer plants, wetland vegetation, bird movement, insects, and habitat patches as biodiversity returns.</dd></div>
-              <div><dt>Waste Recycling</dt><dd>Learn how waste separation, material recovery, reuse, and recycling reduce pressure on landfill systems.</dd></div>
-              <div><dt>Research Studio</dt><dd>Mapping, monitoring, and design exercises help improve the project through evidence.</dd></div>
-            </dl>
-          </Reveal>
+          <div className="learn-cards-section">
+            <p className="learning-intro">Four ways to study how a damaged ground becomes a living system.</p>
+            <div className="learning-grid" aria-label="Learning experiences">
+              {[
+                ["01", "Route", "Field Walks", "Guided routes explain landfill layers, wetland buffers, planting zones, and safe public access."],
+                ["02", "Habitat", "Flora and Fauna", "Observe pioneer plants, wetland vegetation, bird movement, insects, and habitat patches as biodiversity returns."],
+                ["03", "Cycle", "Waste Recycling", "Learn how waste separation, material recovery, reuse, and recycling reduce pressure on landfill systems."],
+                ["04", "Studio", "Research Studio", "Mapping, monitoring, and design exercises help improve the project through evidence."]
+              ].map(([number, kicker, title, text]) => (
+                <article className="learning-card reveal" key={title}>
+                  <div className="learning-card-top">
+                    <span className="learning-card-number">{number}</span>
+                    <span className="learning-card-kicker">{kicker}</span>
+                  </div>
+                  <h3>{title}</h3>
+                  <p>{text}</p>
+                </article>
+              ))}
+            </div>
+          </div>
         </section>
 
         <section className="terrain-lab section-dark" id="opportunities" aria-labelledby="opportunities-title">
@@ -571,12 +685,24 @@ function App() {
             </a>
           </Reveal>
           <Reveal className="map-embed">
-            <iframe
-              title="Google Map showing Mihisaru Resource Management Centre in Karadiyana, Piliyandala"
-              src="https://www.google.com/maps?q=MIHISARU%20Resource%20Management%20Centre%20Thumbowila%20Karadiyana%20Piliyandala%20Sri%20Lanka&output=embed"
+            <button
+              className="map-expand-trigger"
+              type="button"
+              aria-label="Enlarge map"
+              aria-haspopup="dialog"
+              aria-expanded={isMapExpanded}
+              onClick={() => setIsMapExpanded(true)}
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 17 17 7" />
+                <path d="M9 7h8v8" />
+                <path d="M15 17H7V9" />
+              </svg>
+            </button>
+            <img
+              src="/assets/map.webp"
+              alt="Map showing the Karadiyana project site and surrounding area"
               loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              allowFullScreen
             />
           </Reveal>
         </section>
@@ -617,47 +743,83 @@ function App() {
             </p>
           </Reveal>
           <Reveal className="phase-explorer">
-            <div className="phase-tabs" role="tablist" aria-label="Project phases">
-              {["2026-2028", "2029-2034", "2035-2040", "Future"].map((label, index) => (
-                <button
-                  className={`phase-tab ${activePhase === index ? "active" : ""}`}
-                  type="button"
-                  role="tab"
-                  aria-selected={activePhase === index}
-                  key={label}
-                  onClick={() => changePhase(index)}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
             <div className="phase-display">
-              <div className="phase-image-wrap">
+              <div className="phase-plan-wrap">
+                <div className="phase-plan-label">Master Plan</div>
                 <img
-                  className={imageSwitching ? "switching" : ""}
-                  src={phase.image}
-                  alt={phase.alt}
+                  src="/assets/master-plan.png"
+                  alt="Master plan for the Karadiyana Landfill transformation"
                   loading="lazy"
                   decoding="async"
                 />
               </div>
-              <div className="phase-content">
-                <span>{phase.kicker}</span>
-                <h3>{phase.title}</h3>
-                <p>{phase.text}</p>
-                <ul>
-                  {phase.items.map((item) => <li key={item}>{item}</li>)}
-                </ul>
-                <a className="button button-primary" href="#top">Return to start</a>
+              <div className="phase-right">
+                <div className="phase-tabs" role="tablist" aria-label="Project phases">
+                  {["2026–2028", "2029–2034", "2035–2040", "Future"].map((label, index) => (
+                    <button
+                      className={`phase-tab ${activePhase === index ? "active" : ""}`}
+                      type="button"
+                      role="tab"
+                      aria-selected={activePhase === index}
+                      key={label}
+                      onClick={() => changePhase(index)}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+                <div className="phase-content">
+                  <span className="phase-kicker">{phase.kicker}</span>
+                  <h3>{phase.title}</h3>
+                  <p>{phase.text}</p>
+                  <ul>
+                    {phase.items.map((item) => <li key={item}>{item}</li>)}
+                  </ul>
+                  <a className="button button-primary" href="#top">Return to start</a>
+                </div>
               </div>
             </div>
           </Reveal>
         </section>
       </main>
 
+      {isMapExpanded ? (
+        <div
+          className="map-lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="map-lightbox-title"
+          onClick={() => setIsMapExpanded(false)}
+        >
+          <div className="map-lightbox-panel" onClick={(event) => event.stopPropagation()}>
+            <div className="map-lightbox-bar">
+              <div>
+                <p className="map-lightbox-kicker">Expanded map</p>
+                <h3 id="map-lightbox-title">Karadiyana site map</h3>
+              </div>
+              <button
+                className="map-lightbox-close"
+                type="button"
+                onClick={() => setIsMapExpanded(false)}
+                aria-label="Close enlarged map"
+              >
+                Close
+              </button>
+            </div>
+            <div className="map-lightbox-frame">
+              <img
+                src="/assets/map.webp"
+                alt="Map showing the Karadiyana project site and surrounding area"
+                loading="eager"
+              />
+            </div>
+          </div>
+        </div>
+      ) : null}
+
       <footer className="site-footer">
         <p>Comprehensive Design Project 2026 - Bachelor of Landscape Architecture Honours - University of Moratuwa</p>
-        <p>Jayanetti D. A. N. K - 212920A</p>
+        <p>Nethma Jayanetti - 212920A</p>
       </footer>
     </>
   );
