@@ -314,6 +314,7 @@ function App() {
   const [activeThingToDo, setActiveThingToDo] = useState(null);
   const [activeGallerySlide, setActiveGallerySlide] = useState(0);
   const [isHeroVideoLoading, setIsHeroVideoLoading] = useState(true);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const heroVideoRef = useRef(null);
   const marker = markers[activeMarker];
   const phase = phases[activePhase];
@@ -366,28 +367,51 @@ function App() {
     const video = heroVideoRef.current;
     if (!video) return undefined;
 
-    const markReady = () => setIsHeroVideoLoading(false);
-    const markLoading = () => setIsHeroVideoLoading(true);
+    const onPlaying = () => {
+      setIsHeroVideoLoading(false);
+      setIsVideoPlaying(true);
+    };
+    const onCanPlay = () => setIsHeroVideoLoading(false);
+    const onWaiting = () => setIsHeroVideoLoading(true);
+    const onStalled = () => setIsHeroVideoLoading(true);
+    const onError = () => setIsHeroVideoLoading(true);
 
-    video.addEventListener("loadeddata", markReady);
-    video.addEventListener("canplay", markReady);
-    video.addEventListener("playing", markReady);
-    video.addEventListener("waiting", markLoading);
-    video.addEventListener("stalled", markLoading);
-    video.addEventListener("error", markLoading);
+    video.addEventListener("playing", onPlaying);
+    video.addEventListener("canplay", onCanPlay);
+    video.addEventListener("waiting", onWaiting);
+    video.addEventListener("stalled", onStalled);
+    video.addEventListener("error", onError);
 
-    const playPromise = video.play();
-    if (playPromise?.catch) {
-      playPromise.catch(() => {});
-    }
+    const handleVisibility = () => {
+      if (!document.hidden && video.paused) video.play().catch(() => {});
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+
+    const unlockEvents = ["click", "touchstart", "touchend", "scroll", "keydown"];
+    const doPlay = () => {
+      video.play().catch(() => {});
+      unlockEvents.forEach((e) => document.removeEventListener(e, doPlay));
+    };
+    const addGestureListeners = () => {
+      unlockEvents.forEach((e) => document.addEventListener(e, doPlay, { passive: true }));
+    };
+
+    // Let the autoPlay attribute attempt play first.
+    // After 600 ms, if the video is still paused (autoPlay was blocked by Safari policy),
+    // register gesture listeners so the first interaction starts it.
+    const fallbackTimer = setTimeout(() => {
+      if (video.paused) addGestureListeners();
+    }, 600);
 
     return () => {
-      video.removeEventListener("loadeddata", markReady);
-      video.removeEventListener("canplay", markReady);
-      video.removeEventListener("playing", markReady);
-      video.removeEventListener("waiting", markLoading);
-      video.removeEventListener("stalled", markLoading);
-      video.removeEventListener("error", markLoading);
+      clearTimeout(fallbackTimer);
+      video.removeEventListener("playing", onPlaying);
+      video.removeEventListener("canplay", onCanPlay);
+      video.removeEventListener("waiting", onWaiting);
+      video.removeEventListener("stalled", onStalled);
+      video.removeEventListener("error", onError);
+      document.removeEventListener("visibilitychange", handleVisibility);
+      unlockEvents.forEach((e) => document.removeEventListener(e, doPlay));
     };
   }, []);
 
@@ -465,13 +489,16 @@ function App() {
           <div className="hero-background" aria-hidden="true">
             <video
               ref={heroVideoRef}
-              className="hero-media hero-video"
+              className={`hero-media hero-video${isVideoPlaying ? " is-playing" : ""}`}
               autoPlay
               muted
               loop
               playsInline
-              preload="auto"
+              preload="metadata"
+              disablePictureInPicture
+              x-webkit-airplay="deny"
             >
+              <source src="/assets/hero-video-hevc.mp4" type='video/mp4; codecs="hvc1"' />
               <source src="/assets/hero-video-h264.mp4" type='video/mp4; codecs="avc1.4D401E"' />
               <source src="/assets/hero-video-av1.mp4" type='video/mp4; codecs="av01.0.05M.08"' />
               <source src="/assets/hero-video.mp4" type="video/mp4" />
