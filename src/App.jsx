@@ -3,23 +3,93 @@ import React, { useEffect, useMemo, useState } from "react";
 const markers = {
   heat: {
     kicker: "Research",
-    title: "Use the site as a living laboratory",
-    text: "Support heat mapping, biodiversity records, water testing, landfill monitoring, and long-term landscape performance studies."
+    title: "Research Team Opportunities",
+    text: "The research team invites individuals to engage in field-based and applied research that supports the evolution of the site through ecological assessment, environmental monitoring, and regenerative design practices.",
+    sections: [
+      {
+        title: "Available Roles / Positions",
+        items: [
+          { title: "Biodiversity & Ecology Researchers" },
+          { title: "Flora & Vegetation Analysts" },
+          { title: "Faunal Monitoring Specialists" },
+          { title: "Environmental Quality Analysts" },
+          { title: "Waste & Material Innovation Researchers" },
+          { title: "Climate & Microclimate Researchers" }
+        ]
+      }
+    ]
   },
   water: {
     kicker: "Park Management",
-    title: "Care for the public landscape",
-    text: "Create roles for trail safety, visitor guidance, planting maintenance, public programs, monitoring, and everyday park operations."
+    title: "Park Management Opportunities",
+    text: "The regenerated community forest is sustained through an active and inclusive park management system that invites public participation in long-term stewardship, maintenance, ecological health, and social value.",
+    sections: [
+      {
+        title: "Available Roles / Positions",
+        items: [
+          {
+            title: "Landscape Maintenance Assistants",
+            text: "Support and ensure healthy ecological growth."
+          },
+          {
+            title: "Park Operations Coordinators",
+            text: "Manage daily activities, visitor flow, safety protocols, and coordination between different functional zones of the park."
+          },
+          {
+            title: "Environmental Monitoring Team",
+            text: "Assist in tracking air quality, soil conditions, vegetation growth, and overall ecological performance of the regenerated site."
+          },
+          {
+            title: "Community Engagement Facilitators",
+            text: "Lead awareness programs, guided walks, and educational activities to connect visitors with the story and function of the landscape."
+          }
+        ]
+      }
+    ]
   },
   ecology: {
     kicker: "Waste Management",
-    title: "Improve material systems",
-    text: "Connect sorting, recycling, composting, waste education, and safe residual handling with the wider recovery of the landfill ground."
+    title: "Waste Management Team Opportunities",
+    text: "The waste management team offers practical and technical roles that are essential for maintaining the daily functioning of the site.",
+    sections: [
+      {
+        title: "Available Roles / Positions",
+        items: [
+          { title: "Waste Sorting & Segregation Staff" },
+          { title: "Recycling Operations Assistants" },
+          { title: "Organic Processing Technicians" },
+          { title: "Emissions Monitoring Assistants" }
+        ]
+      }
+    ]
   },
   people: {
     kicker: "Private Partners",
-    title: "Invest in long-term stewardship",
-    text: "Open space for sponsorships, technical partnerships, research funding, managed facilities, public programs, and maintenance support."
+    title: "Private Partnership Opportunities",
+    text: "The project offers entry points for private firms, entrepreneurs, and organizations to invest, operate, and innovate within a functioning regenerative landscape while contributing to environmental restoration.",
+    sections: [
+      {
+        title: "Partnership Areas",
+        items: [
+          {
+            title: "Material Procurement & Recycling Partnerships",
+            text: "Purchase sorted waste streams such as plastic, paper, glass, and metal, and integrate them into industrial recycling and manufacturing processes."
+          },
+          {
+            title: "Organic Waste & Bioenergy Ventures",
+            text: "Invest in or operate composting, biogas, and organic processing systems to generate energy and soil products."
+          },
+          {
+            title: "Waste-to-Product Innovation",
+            text: "Develop new materials and products using recycled or recovered waste, including construction materials, composites, and design products."
+          },
+          {
+            title: "Technology & Infrastructure Investment",
+            text: "Support advanced technologies for waste sorting, emissions control, leachate treatment, and monitoring systems."
+          }
+        ]
+      }
+    ]
   }
 };
 
@@ -83,6 +153,78 @@ const navItems = [
   { label: "Map", id: "map" },
   { label: "News", id: "news" },
   { label: "Future", id: "future" }
+];
+
+const thingsToDoItems = [
+  {
+    number: "01",
+    title: "Kayaking",
+    text: "Follow calm water edges by kayak and read the recovered wetland from a slower, closer point of view.",
+    detail: "Kayaking opens a direct relationship with the restored water system. It lets visitors move slowly through the wetland edge, observe cooling landscapes, and understand how water management becomes part of public experience.",
+    images: [
+      ["/assets/report-page-20.webp", "Development plan drawing showing water edges and movement routes through the site"],
+      ["/assets/report-page-21.webp", "Ecological recovery strategy showing wetlands and drainage systems"]
+    ]
+  },
+  {
+    number: "02",
+    title: "Urban Observation",
+    text: "Use lookouts and mapped stops to study landfill form, settlement edges, movement corridors, and city growth.",
+    detail: "Observation points frame the site within the wider metropolitan landscape. These stops make it possible to read the landfill mound, surrounding neighborhoods, mobility corridors, and the environmental pressures created by urban expansion.",
+    images: [
+      ["/assets/report-page-18.webp", "Project formulation diagram linking landfill systems with surrounding city conditions"],
+      ["/assets/map.webp", "Map showing the Karadiyana site and surrounding landscape context"]
+    ]
+  },
+  {
+    number: "03",
+    title: "Forest Trail",
+    text: "Walk shaded routes through new planting zones, habitat patches, and cooling groves as the site matures.",
+    detail: "The forest trail is a guided movement system through recovering ecological ground. It connects planting zones, shaded routes, and habitat patches so visitors can experience ecological succession and long-term landscape care.",
+    images: [
+      ["/assets/forest-trail.webp", "Forest trail landscape view through restored planting and path systems"],
+      ["/assets/forest-trail-2.webp", "Forest trail view showing dense vegetation and shaded movement routes"]
+    ]
+  },
+  {
+    number: "04",
+    title: "Freedom Grounds",
+    text: "Gather in open flexible grounds for community events, outdoor learning, rest, and everyday public use.",
+    detail: "Freedom Grounds are adaptable public clearings within the larger landscape. They support events, outdoor learning, rest, and casual everyday use while staying compatible with the site's long-term ecological recovery.",
+    images: [
+      ["/assets/report-page-01.webp", "Future landscape image of the regenerated Karadiyana site"],
+      ["/assets/master-plan.png", "Master plan showing open public spaces and circulation within the future landscape"]
+    ]
+  },
+  {
+    number: "05",
+    title: "Waste Sculpture Lands",
+    text: "Explore art landscapes where recovered materials and waste memory become public installations.",
+    detail: "Waste Sculpture Lands turn discarded materials into visible cultural elements. The installations keep the memory of the landfill present while reworking waste into public art, interpretation, and creative reuse.",
+    images: [
+      ["/assets/report-page-05.webp", "Design vision diagrams exploring reduce, cool, and reuse ideas"],
+      ["/assets/report-page-18.webp", "Diagram connecting waste problems with ecological and social opportunities"]
+    ]
+  }
+];
+
+const gallerySlides = [
+  [
+    "/assets/gallery-slide-1.webp",
+    "Concept visualization of the regenerated Karadiyana landscape"
+  ],
+  [
+    "/assets/gallery-slide-2.webp",
+    "View of public landscape spaces imagined for the Karadiyana site"
+  ],
+  [
+    "/assets/gallery-slide-3.webp",
+    "Illustration of ecological restoration and community use at Karadiyana"
+  ],
+  [
+    "/assets/gallery-slide-4.webp",
+    "Future vision rendering of the Karadiyana transformed landscape"
+  ]
 ];
 
 const wasteCollectionData = [
@@ -169,6 +311,8 @@ function App() {
   const [activeMarker, setActiveMarker] = useState("heat");
   const [activePhase, setActivePhase] = useState(0);
   const [isMapExpanded, setIsMapExpanded] = useState(false);
+  const [activeThingToDo, setActiveThingToDo] = useState(null);
+  const [activeGallerySlide, setActiveGallerySlide] = useState(0);
   const marker = markers[activeMarker];
   const phase = phases[activePhase];
 
@@ -204,11 +348,11 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const heroImage = document.querySelector(".hero-image");
+    const heroMedia = document.querySelector(".hero-media");
     const moveHero = () => {
-      if (!heroImage) return;
+      if (!heroMedia) return;
       const offset = Math.min(window.scrollY * 0.08, 42);
-      heroImage.style.transform = `scale(1.03) translateY(${offset}px)`;
+      heroMedia.style.transform = `scale(1.03) translateY(${offset}px)`;
     };
 
     moveHero();
@@ -239,6 +383,11 @@ function App() {
   }, [isMapExpanded]);
 
   useEffect(() => {
+    document.body.classList.toggle("activity-open", Boolean(activeThingToDo));
+    return () => document.body.classList.remove("activity-open");
+  }, [activeThingToDo]);
+
+  useEffect(() => {
     if (!isMapExpanded) return undefined;
 
     const handleKeyDown = (event) => {
@@ -251,6 +400,27 @@ function App() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isMapExpanded]);
 
+  useEffect(() => {
+    if (!activeThingToDo) return undefined;
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setActiveThingToDo(null);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [activeThingToDo]);
+
+  useEffect(() => {
+    const timerId = window.setInterval(() => {
+      setActiveGallerySlide((current) => (current + 1) % gallerySlides.length);
+    }, 3500);
+
+    return () => window.clearInterval(timerId);
+  }, []);
+
   const changePhase = (index) => {
     setActivePhase(index);
   };
@@ -261,14 +431,18 @@ function App() {
 
       <main id="top">
         <section className="hero section-dark" aria-labelledby="hero-title">
-          <img
-            className="hero-image"
-            src="/assets/report-page-01.webp"
-            alt="Karadiyana landfill mound with birds in the sky"
-            loading="eager"
-            decoding="async"
-            fetchPriority="high"
-          />
+          <video
+            className="hero-media hero-video"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            poster="/assets/report-page-01.webp"
+            aria-hidden="true"
+          >
+            <source src="/assets/hero-video.mp4" type="video/mp4" />
+          </video>
           <div className="hero-vignette" />
           <Reveal className="hero-content">
             <p className="eyebrow">Karadiyana Landfill, Piliyandala</p>
@@ -563,18 +737,20 @@ function App() {
           </Reveal>
 
           <div className="pillar-grid">
-            {[
-              ["01", "Kayaking", "Follow calm water edges by kayak and read the recovered wetland from a slower, closer point of view."],
-              ["02", "Urban Observation", "Use lookouts and mapped stops to study landfill form, settlement edges, movement corridors, and city growth."],
-              ["03", "Forest Trail", "Walk shaded routes through new planting zones, habitat patches, and cooling groves as the site matures."],
-              ["04", "Freedom Grounds", "Gather in open flexible grounds for community events, outdoor learning, rest, and everyday public use."],
-              ["05", "Waste Sculpture Lands", "Explore art landscapes where recovered materials and waste memory become public installations."]
-            ].map(([number, title, text]) => (
-              <article className="pillar reveal" key={title}>
-                <span className="pillar-number">{number}</span>
-                <h3>{title}</h3>
-                <p>{text}</p>
-              </article>
+            {thingsToDoItems.map((item) => (
+              <button
+                className="pillar reveal"
+                type="button"
+                key={item.title}
+                aria-haspopup="dialog"
+                aria-label={`Open details for ${item.title}`}
+                onClick={() => setActiveThingToDo(item)}
+              >
+                <span className="pillar-cta">Click to explore</span>
+                <span className="pillar-number">{item.number}</span>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </button>
             ))}
           </div>
         </section>
@@ -631,32 +807,47 @@ function App() {
             </p>
           </Reveal>
           <Reveal className="terrain-stage">
-            <svg className="terrain-svg" viewBox="0 0 900 420" role="img" aria-labelledby="terrain-svg-title terrain-svg-desc">
-              <title id="terrain-svg-title">Abstract terrain section of the Karadiyana landfill</title>
-              <desc id="terrain-svg-desc">A stylized landfill mound beside wetland water, forest patches, trails, and emission pipes.</desc>
-              <path className="water" d="M0 330 C120 315 200 360 310 335 C430 305 500 350 640 326 C740 310 820 335 900 315 L900 420 L0 420 Z" />
-              <path className="ground" d="M0 300 C80 280 125 250 180 244 C245 236 280 160 350 146 C430 127 510 210 580 192 C670 168 725 198 790 220 C835 236 870 238 900 232 L900 420 L0 420 Z" />
-              <path className="cap" d="M130 256 C214 230 262 185 333 165 C410 142 486 214 568 201 C661 186 724 207 815 234" />
-              <path className="trail" d="M125 281 C214 255 305 230 375 229 C472 228 516 264 610 250 C686 238 745 247 823 234" />
-              <g className="pipes"><path d="M340 155 L340 86" /><path d="M462 178 L462 92" /><path d="M589 193 L589 114" /></g>
-              <g className="trees"><path d="M208 236 l-15 -34 l-15 34 h11 l-11 25 h30 l-11 -25z" /><path d="M704 204 l-17 -42 l-17 42 h13 l-14 31 h35 l-13 -31z" /><path d="M760 220 l-13 -32 l-13 32 h10 l-11 25 h28 l-11 -25z" /><path d="M270 200 l-12 -28 l-12 28 h9 l-9 21 h25 l-9 -21z" /></g>
-              <g className="reeds"><path d="M52 325 C45 300 42 283 48 265" /><path d="M74 322 C70 294 78 280 90 262" /><path d="M102 328 C95 300 95 284 105 266" /><path d="M826 318 C819 296 823 278 836 260" /><path d="M852 318 C850 296 856 282 870 266" /></g>
-            </svg>
-            {hotspotData.map((hotspot) => (
-              <button
-                className={`hotspot ${activeMarker === hotspot.id ? "active" : ""}`}
-                type="button"
-                key={hotspot.id}
-                style={{ "--x": hotspot.x, "--y": hotspot.y }}
-                onClick={() => setActiveMarker(hotspot.id)}
-              >
-                {hotspot.label}
-              </button>
-            ))}
+            <div className="terrain-canvas">
+              <svg className="terrain-svg" viewBox="0 0 900 420" role="img" aria-labelledby="terrain-svg-title terrain-svg-desc">
+                <title id="terrain-svg-title">Abstract terrain section of the Karadiyana landfill</title>
+                <desc id="terrain-svg-desc">A stylized landfill mound beside wetland water, forest patches, trails, and emission pipes.</desc>
+                <path className="water" d="M0 330 C120 315 200 360 310 335 C430 305 500 350 640 326 C740 310 820 335 900 315 L900 420 L0 420 Z" />
+                <path className="ground" d="M0 300 C80 280 125 250 180 244 C245 236 280 160 350 146 C430 127 510 210 580 192 C670 168 725 198 790 220 C835 236 870 238 900 232 L900 420 L0 420 Z" />
+                <path className="cap" d="M130 256 C214 230 262 185 333 165 C410 142 486 214 568 201 C661 186 724 207 815 234" />
+                <path className="trail" d="M125 281 C214 255 305 230 375 229 C472 228 516 264 610 250 C686 238 745 247 823 234" />
+                <g className="pipes"><path d="M340 155 L340 86" /><path d="M462 178 L462 92" /><path d="M589 193 L589 114" /></g>
+                <g className="trees"><path d="M208 236 l-15 -34 l-15 34 h11 l-11 25 h30 l-11 -25z" /><path d="M704 204 l-17 -42 l-17 42 h13 l-14 31 h35 l-13 -31z" /><path d="M760 220 l-13 -32 l-13 32 h10 l-11 25 h28 l-11 -25z" /><path d="M270 200 l-12 -28 l-12 28 h9 l-9 21 h25 l-9 -21z" /></g>
+                <g className="reeds"><path d="M52 325 C45 300 42 283 48 265" /><path d="M74 322 C70 294 78 280 90 262" /><path d="M102 328 C95 300 95 284 105 266" /><path d="M826 318 C819 296 823 278 836 260" /><path d="M852 318 C850 296 856 282 870 266" /></g>
+              </svg>
+              {hotspotData.map((hotspot) => (
+                <button
+                  className={`hotspot ${activeMarker === hotspot.id ? "active" : ""}`}
+                  type="button"
+                  key={hotspot.id}
+                  style={{ "--x": hotspot.x, "--y": hotspot.y }}
+                  onClick={() => setActiveMarker(hotspot.id)}
+                >
+                  {hotspot.label}
+                </button>
+              ))}
+            </div>
             <div className="marker-card" aria-live="polite">
               <span>{marker.kicker}</span>
               <h3>{marker.title}</h3>
               <p>{marker.text}</p>
+              {marker.sections?.map((section) => (
+                <div className="marker-section" key={section.title}>
+                  <h4>{section.title}</h4>
+                  <ul className="marker-list">
+                    {section.items.map((item) => (
+                      <li key={item.title}>
+                        <strong>{item.title}</strong>
+                        {item.text ? <p>{item.text}</p> : null}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
           </Reveal>
         </section>
@@ -710,26 +901,33 @@ function App() {
         <section className="strategy-gallery" id="news" aria-labelledby="news-title">
           <Reveal className="section-heading">
             <p className="eyebrow">News</p>
-            <h2 id="news-title">Field notes from the recovery ground</h2>
-            <p>
-              Updates keep the project visible as it moves from design proposal into discussion,
-              stewardship planning, field learning, and future implementation.
-            </p>
+            <h2 id="news-title">Project gallery</h2>
           </Reveal>
-          <div className="strategy-grid">
-            {[
-              ["/assets/report-page-05.webp", "Reduce cool reuse project vision diagrams", "Design Story Published", "The project frames Karadiyana through three clear actions: reduce waste impact, cool the ground, and reuse the landscape."],
-              ["/assets/report-page-18.webp", "Project formulation diagram linking landfill issues to ecological, climate, and social potentials", "Community Forest Idea Shared", "The landfill is presented as a future learning forest where climate repair and public care can grow together."],
-              ["/assets/report-page-21.webp", "Phased strategy diagrams showing landfill stabilization, planting, wetlands, and community spaces", "Roadmap Ready", "The implementation sequence sets out control, ecological recovery, public access, and long-term stewardship."
-              ]
-            ].map(([image, alt, title, text]) => (
-              <article className="strategy reveal" key={title}>
-                <img src={image} alt={alt} loading="lazy" decoding="async" />
-                <h3>{title}</h3>
-                <p>{text}</p>
-              </article>
-            ))}
-          </div>
+          <Reveal className="gallery-slider">
+            <div className="gallery-slider-frame">
+              {gallerySlides.map(([image, alt], index) => (
+                <img
+                  className={`gallery-slide ${activeGallerySlide === index ? "active" : ""}`}
+                  src={image}
+                  alt={alt}
+                  loading="lazy"
+                  decoding="async"
+                  key={image}
+                />
+              ))}
+            </div>
+            <div className="gallery-slider-dots" aria-label="Gallery navigation">
+              {gallerySlides.map((_, index) => (
+                <button
+                  className={`gallery-slider-dot ${activeGallerySlide === index ? "active" : ""}`}
+                  type="button"
+                  key={index}
+                  aria-label={`Show slide ${index + 1}`}
+                  onClick={() => setActiveGallerySlide(index)}
+                />
+              ))}
+            </div>
+          </Reveal>
         </section>
 
         <section className="phases-section" id="future" aria-labelledby="future-title">
@@ -782,6 +980,41 @@ function App() {
           </Reveal>
         </section>
       </main>
+
+      {activeThingToDo ? (
+        <div
+          className="activity-lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="activity-lightbox-title"
+          onClick={() => setActiveThingToDo(null)}
+        >
+          <div className="activity-lightbox-panel" onClick={(event) => event.stopPropagation()}>
+            <button
+              className="activity-lightbox-close"
+              type="button"
+              onClick={() => setActiveThingToDo(null)}
+              aria-label="Close activity details"
+            >
+              Close
+            </button>
+            <div className="activity-lightbox-copy">
+              <span className="activity-lightbox-number">{activeThingToDo.number}</span>
+              <p className="activity-lightbox-kicker">Things To Do</p>
+              <h3 id="activity-lightbox-title">{activeThingToDo.title}</h3>
+              <p>{activeThingToDo.text}</p>
+              <p>{activeThingToDo.detail}</p>
+            </div>
+            <div className="activity-lightbox-gallery">
+              {activeThingToDo.images.map(([src, alt]) => (
+                <figure className="activity-lightbox-figure" key={src}>
+                  <img src={src} alt={alt} loading="lazy" decoding="async" />
+                </figure>
+              ))}
+            </div>
+          </div>
+        </div>
+      ) : null}
 
       {isMapExpanded ? (
         <div
