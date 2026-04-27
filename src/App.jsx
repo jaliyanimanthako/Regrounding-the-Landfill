@@ -472,6 +472,7 @@ function App() {
               playsInline
               preload="auto"
             >
+              <source src="/assets/hero-video-h264.mp4" type='video/mp4; codecs="avc1.4D401E"' />
               <source src="/assets/hero-video-av1.mp4" type='video/mp4; codecs="av01.0.05M.08"' />
               <source src="/assets/hero-video.mp4" type="video/mp4" />
             </video>
