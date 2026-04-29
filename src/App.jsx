@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import mainLogo from "../assets/Untitled design (1).png";
 
 const markers = {
   heat: {
@@ -162,8 +163,7 @@ const thingsToDoItems = [
     text: "Follow calm water edges by kayak and read the recovered wetland from a slower, closer point of view.",
     detail: "Kayaking opens a direct relationship with the restored water system. It lets visitors move slowly through the wetland edge, observe cooling landscapes, and understand how water management becomes part of public experience.",
     images: [
-      ["/assets/report-page-20.webp", "Development plan drawing showing water edges and movement routes through the site"],
-      ["/assets/report-page-21.webp", "Ecological recovery strategy showing wetlands and drainage systems"]
+      ["/assets/kayaking-1.webp", "Kayaking view across the restored wetland landscape"]
     ]
   },
   {
@@ -172,8 +172,7 @@ const thingsToDoItems = [
     text: "Use lookouts and mapped stops to study landfill form, settlement edges, movement corridors, and city growth.",
     detail: "Observation points frame the site within the wider metropolitan landscape. These stops make it possible to read the landfill mound, surrounding neighborhoods, mobility corridors, and the environmental pressures created by urban expansion.",
     images: [
-      ["/assets/report-page-18.webp", "Project formulation diagram linking landfill systems with surrounding city conditions"],
-      ["/assets/map.webp", "Map showing the Karadiyana site and surrounding landscape context"]
+      ["/assets/urban-observation.webp", "Urban observation lawn area view across the Karadiyana landscape"]
     ]
   },
   {
@@ -188,12 +187,11 @@ const thingsToDoItems = [
   },
   {
     number: "04",
-    title: "Freedom Grounds",
+    title: "Wetland Trails",
     text: "Gather in open flexible grounds for community events, outdoor learning, rest, and everyday public use.",
     detail: "Freedom Grounds are adaptable public clearings within the larger landscape. They support events, outdoor learning, rest, and casual everyday use while staying compatible with the site's long-term ecological recovery.",
     images: [
-      ["/assets/report-page-01.webp", "Future landscape image of the regenerated Karadiyana site"],
-      ["/assets/master-plan.png", "Master plan showing open public spaces and circulation within the future landscape"]
+      ["/assets/freedom-grounds.webp", "Freedom Grounds wetland trail landscape view across the regenerated site"]
     ]
   },
   {
@@ -202,8 +200,7 @@ const thingsToDoItems = [
     text: "Explore art landscapes where recovered materials and waste memory become public installations.",
     detail: "Waste Sculpture Lands turn discarded materials into visible cultural elements. The installations keep the memory of the landfill present while reworking waste into public art, interpretation, and creative reuse.",
     images: [
-      ["/assets/report-page-05.webp", "Design vision diagrams exploring reduce, cool, and reuse ideas"],
-      ["/assets/report-page-18.webp", "Diagram connecting waste problems with ecological and social opportunities"]
+      ["/assets/waste-sculpture-lands.webp", "Waste sculpture landscape view showing reused material installations across the regenerated site"]
     ]
   }
 ];
@@ -276,8 +273,9 @@ function Header() {
   return (
     <header className={`site-header ${isScrolled ? "scrolled" : ""}`} aria-label="Primary navigation">
       <a className="brand" href="#top" aria-label="Regrounding the Landfill home">
-        <span className="brand-mark" />
-        <span>Regrounding</span>
+        <span className="brand-logo-frame" aria-hidden="true">
+          <img className="brand-logo" src={mainLogo} alt="Karadiyana Forest Management" />
+        </span>
       </a>
       <button
         className="menu-toggle"
@@ -314,6 +312,7 @@ function App() {
   const [activeThingToDo, setActiveThingToDo] = useState(null);
   const [activeGallerySlide, setActiveGallerySlide] = useState(0);
   const [isHeroVideoLoading, setIsHeroVideoLoading] = useState(true);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const heroVideoRef = useRef(null);
   const marker = markers[activeMarker];
   const phase = phases[activePhase];
@@ -366,28 +365,51 @@ function App() {
     const video = heroVideoRef.current;
     if (!video) return undefined;
 
-    const markReady = () => setIsHeroVideoLoading(false);
-    const markLoading = () => setIsHeroVideoLoading(true);
+    const onPlaying = () => {
+      setIsHeroVideoLoading(false);
+      setIsVideoPlaying(true);
+    };
+    const onCanPlay = () => setIsHeroVideoLoading(false);
+    const onWaiting = () => setIsHeroVideoLoading(true);
+    const onStalled = () => setIsHeroVideoLoading(true);
+    const onError = () => setIsHeroVideoLoading(true);
 
-    video.addEventListener("loadeddata", markReady);
-    video.addEventListener("canplay", markReady);
-    video.addEventListener("playing", markReady);
-    video.addEventListener("waiting", markLoading);
-    video.addEventListener("stalled", markLoading);
-    video.addEventListener("error", markLoading);
+    video.addEventListener("playing", onPlaying);
+    video.addEventListener("canplay", onCanPlay);
+    video.addEventListener("waiting", onWaiting);
+    video.addEventListener("stalled", onStalled);
+    video.addEventListener("error", onError);
 
-    const playPromise = video.play();
-    if (playPromise?.catch) {
-      playPromise.catch(() => {});
-    }
+    const handleVisibility = () => {
+      if (!document.hidden && video.paused) video.play().catch(() => {});
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+
+    const unlockEvents = ["click", "touchstart", "touchend", "scroll", "keydown"];
+    const doPlay = () => {
+      video.play().catch(() => {});
+      unlockEvents.forEach((e) => document.removeEventListener(e, doPlay));
+    };
+    const addGestureListeners = () => {
+      unlockEvents.forEach((e) => document.addEventListener(e, doPlay, { passive: true }));
+    };
+
+    // Let the autoPlay attribute attempt play first.
+    // After 600 ms, if the video is still paused (autoPlay was blocked by Safari policy),
+    // register gesture listeners so the first interaction starts it.
+    const fallbackTimer = setTimeout(() => {
+      if (video.paused) addGestureListeners();
+    }, 600);
 
     return () => {
-      video.removeEventListener("loadeddata", markReady);
-      video.removeEventListener("canplay", markReady);
-      video.removeEventListener("playing", markReady);
-      video.removeEventListener("waiting", markLoading);
-      video.removeEventListener("stalled", markLoading);
-      video.removeEventListener("error", markLoading);
+      clearTimeout(fallbackTimer);
+      video.removeEventListener("playing", onPlaying);
+      video.removeEventListener("canplay", onCanPlay);
+      video.removeEventListener("waiting", onWaiting);
+      video.removeEventListener("stalled", onStalled);
+      video.removeEventListener("error", onError);
+      document.removeEventListener("visibilitychange", handleVisibility);
+      unlockEvents.forEach((e) => document.removeEventListener(e, doPlay));
     };
   }, []);
 
@@ -465,13 +487,16 @@ function App() {
           <div className="hero-background" aria-hidden="true">
             <video
               ref={heroVideoRef}
-              className="hero-media hero-video"
+              className={`hero-media hero-video${isVideoPlaying ? " is-playing" : ""}`}
               autoPlay
               muted
               loop
               playsInline
-              preload="auto"
+              preload="metadata"
+              disablePictureInPicture
+              x-webkit-airplay="deny"
             >
+              <source src="/assets/hero-video-hevc.mp4" type='video/mp4; codecs="hvc1"' />
               <source src="/assets/hero-video-h264.mp4" type='video/mp4; codecs="avc1.4D401E"' />
               <source src="/assets/hero-video-av1.mp4" type='video/mp4; codecs="av01.0.05M.08"' />
               <source src="/assets/hero-video.mp4" type="video/mp4" />
@@ -1054,7 +1079,7 @@ function App() {
               <p>{activeThingToDo.text}</p>
               <p>{activeThingToDo.detail}</p>
             </div>
-            <div className="activity-lightbox-gallery">
+            <div className={`activity-lightbox-gallery ${activeThingToDo.images.length === 1 ? "single-image" : ""}`}>
               {activeThingToDo.images.map(([src, alt]) => (
                 <figure className="activity-lightbox-figure" key={src}>
                   <img src={src} alt={alt} loading="lazy" decoding="async" />
