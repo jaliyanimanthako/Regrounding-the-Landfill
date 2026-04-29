@@ -224,6 +224,8 @@ const gallerySlides = [
   ]
 ];
 
+const mapImageSrc = "/assets/map.webp";
+
 const wasteCollectionData = [
   { label: "Dehiwala - Mt. Lavinia MC", value: 179, color: "#c1ae92" },
   { label: "Moratuwa MC", value: 126, color: "#9cb07b" },
@@ -327,6 +329,28 @@ function App() {
     ],
     []
   );
+
+  useEffect(() => {
+    let isActive = true;
+    const preloadMapImage = new Image();
+    const markMapReady = () => {
+      if (isActive) setIsMapImageReady(true);
+    };
+
+    preloadMapImage.onload = markMapReady;
+    preloadMapImage.onerror = markMapReady;
+    preloadMapImage.src = mapImageSrc;
+
+    if (preloadMapImage.complete) {
+      markMapReady();
+    }
+
+    return () => {
+      isActive = false;
+      preloadMapImage.onload = null;
+      preloadMapImage.onerror = null;
+    };
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -639,11 +663,11 @@ function App() {
             {!isMapImageReady ? (
               <div className="map-loader" aria-live="polite">
                 <span className="map-loader-ring" aria-hidden="true" />
-                <span className="map-loader-text">Map loading</span>
+                <span className="map-loader-text">Loading the map</span>
               </div>
             ) : null}
             <img
-              src="/assets/map.webp"
+              src={mapImageSrc}
               alt="Map showing the Karadiyana project site and surrounding area"
               loading="lazy"
               decoding="async"
@@ -1089,11 +1113,11 @@ function App() {
               {!isMapImageReady ? (
                 <div className="map-loader map-loader-lightbox" aria-live="polite">
                   <span className="map-loader-ring" aria-hidden="true" />
-                  <span className="map-loader-text">Map loading</span>
+                  <span className="map-loader-text">Loading the map</span>
                 </div>
               ) : null}
               <img
-                src="/assets/map.webp"
+                src={mapImageSrc}
                 alt="Map showing the Karadiyana project site and surrounding area"
                 loading="eager"
                 decoding="async"
