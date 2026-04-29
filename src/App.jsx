@@ -162,8 +162,7 @@ const thingsToDoItems = [
     text: "Follow calm water edges by kayak and read the recovered wetland from a slower, closer point of view.",
     detail: "Kayaking opens a direct relationship with the restored water system. It lets visitors move slowly through the wetland edge, observe cooling landscapes, and understand how water management becomes part of public experience.",
     images: [
-      ["/assets/report-page-20.webp", "Development plan drawing showing water edges and movement routes through the site"],
-      ["/assets/report-page-21.webp", "Ecological recovery strategy showing wetlands and drainage systems"]
+      ["/assets/kayaking-1.webp", "Kayaking view across the restored wetland landscape"]
     ]
   },
   {
@@ -172,8 +171,7 @@ const thingsToDoItems = [
     text: "Use lookouts and mapped stops to study landfill form, settlement edges, movement corridors, and city growth.",
     detail: "Observation points frame the site within the wider metropolitan landscape. These stops make it possible to read the landfill mound, surrounding neighborhoods, mobility corridors, and the environmental pressures created by urban expansion.",
     images: [
-      ["/assets/report-page-18.webp", "Project formulation diagram linking landfill systems with surrounding city conditions"],
-      ["/assets/map.webp", "Map showing the Karadiyana site and surrounding landscape context"]
+      ["/assets/urban-observation.webp", "Urban observation lawn area view across the Karadiyana landscape"]
     ]
   },
   {
@@ -188,12 +186,11 @@ const thingsToDoItems = [
   },
   {
     number: "04",
-    title: "Freedom Grounds",
+    title: "Wetland Trails",
     text: "Gather in open flexible grounds for community events, outdoor learning, rest, and everyday public use.",
     detail: "Freedom Grounds are adaptable public clearings within the larger landscape. They support events, outdoor learning, rest, and casual everyday use while staying compatible with the site's long-term ecological recovery.",
     images: [
-      ["/assets/report-page-01.webp", "Future landscape image of the regenerated Karadiyana site"],
-      ["/assets/master-plan.png", "Master plan showing open public spaces and circulation within the future landscape"]
+      ["/assets/freedom-grounds.webp", "Freedom Grounds wetland trail landscape view across the regenerated site"]
     ]
   },
   {
@@ -202,8 +199,7 @@ const thingsToDoItems = [
     text: "Explore art landscapes where recovered materials and waste memory become public installations.",
     detail: "Waste Sculpture Lands turn discarded materials into visible cultural elements. The installations keep the memory of the landfill present while reworking waste into public art, interpretation, and creative reuse.",
     images: [
-      ["/assets/report-page-05.webp", "Design vision diagrams exploring reduce, cool, and reuse ideas"],
-      ["/assets/report-page-18.webp", "Diagram connecting waste problems with ecological and social opportunities"]
+      ["/assets/waste-sculpture-lands.webp", "Waste sculpture landscape view showing reused material installations across the regenerated site"]
     ]
   }
 ];
@@ -1081,7 +1077,7 @@ function App() {
               <p>{activeThingToDo.text}</p>
               <p>{activeThingToDo.detail}</p>
             </div>
-            <div className="activity-lightbox-gallery">
+            <div className={`activity-lightbox-gallery ${activeThingToDo.images.length === 1 ? "single-image" : ""}`}>
               {activeThingToDo.images.map(([src, alt]) => (
                 <figure className="activity-lightbox-figure" key={src}>
                   <img src={src} alt={alt} loading="lazy" decoding="async" />
