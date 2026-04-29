@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import mainLogo from "../assets/Untitled design (1).png";
+import mainLogo from "../assets/karadiyana-logo.webp";
 
 const markers = {
   heat: {
@@ -146,13 +146,13 @@ const phases = [
 ];
 
 const navItems = [
-  { label: "Project", id: "about" },
-  { label: "History", id: "history" },
   { label: "Things", id: "things-to-do" },
+  { label: "News", id: "news" },
+  { label: "Map", id: "map" },
   { label: "Learn", id: "learn-with-us" },
   { label: "Opportunities", id: "opportunities" },
-  { label: "Map", id: "map" },
-  { label: "News", id: "news" },
+  { label: "Project", id: "about" },
+  { label: "History", id: "history" },
   { label: "Future", id: "future" }
 ];
 
@@ -513,7 +513,7 @@ function App() {
             <p className="hero-subtitle">Regrounding the landfill.</p>
             <div className="hero-actions">
               <a className="button button-primary" href="#about">Explore the project</a>
-              <a className="button button-secondary" href="/212920A%20-%20Report%20Submission_56c3db2afdf1e5737a1a73f453a2ec9c.pdf">
+              <a className="button button-secondary" href="/report-submission.pdf">
                 Open report
               </a>
             </div>
@@ -526,6 +526,218 @@ function App() {
             <span />
             Scroll
           </div>
+        </section>
+
+        <section className="mosaic-section" id="things-to-do" aria-labelledby="things-title">
+          <Reveal className="section-heading">
+            <p className="eyebrow">Things To Do</p>
+            <h2 id="things-title">Move through a recovered landscape</h2>
+            <p>
+              The site is imagined as a careful public landscape where movement, observation, play, art,
+              and ecological recovery sit together. Activities stay guided by safety and landscape care.
+            </p>
+          </Reveal>
+
+          <div className="pillar-grid">
+            {thingsToDoItems.map((item) => (
+              <button
+                className="pillar reveal"
+                type="button"
+                key={item.title}
+                aria-haspopup="dialog"
+                aria-label={`Open details for ${item.title}`}
+                onClick={() => setActiveThingToDo(item)}
+              >
+                <div className="pillar-media" aria-hidden="true">
+                  <img
+                    src={item.images[0][0]}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <span className="pillar-cta">Click to explore</span>
+                <span className="pillar-number">{item.number}</span>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section className="strategy-gallery" id="news" aria-labelledby="news-title">
+          <Reveal className="section-heading">
+            <p className="eyebrow">News</p>
+            <h2 id="news-title">Project gallery</h2>
+          </Reveal>
+          <Reveal className="gallery-slider">
+            <div className="gallery-slider-frame">
+              {gallerySlides.map(([image, alt], index) => (
+                <img
+                  className={`gallery-slide ${activeGallerySlide === index ? "active" : ""}`}
+                  src={image}
+                  alt={alt}
+                  loading="lazy"
+                  decoding="async"
+                  key={image}
+                />
+              ))}
+            </div>
+            <div className="gallery-slider-dots" aria-label="Gallery navigation">
+              {gallerySlides.map((_, index) => (
+                <button
+                  className={`gallery-slider-dot ${activeGallerySlide === index ? "active" : ""}`}
+                  type="button"
+                  key={index}
+                  aria-label={`Show slide ${index + 1}`}
+                  onClick={() => setActiveGallerySlide(index)}
+                />
+              ))}
+            </div>
+          </Reveal>
+        </section>
+
+        <section className="location-section" id="map" aria-labelledby="map-title">
+          <Reveal className="location-copy">
+            <p className="eyebrow">Map</p>
+            <h2 id="map-title">Find the ground where recovery begins</h2>
+            <p>
+              The project site sits at Thumbowila, Karadiyana, Piliyandala, within the Colombo
+              metropolitan edge where landfill operations, wetland systems, residential communities,
+              and regional movement corridors meet.
+            </p>
+            <div className="location-facts" aria-label="Location facts">
+              <span>Thumbowila, Karadiyana</span>
+              <span>Piliyandala, Sri Lanka</span>
+              <span>Near Bolgoda watershed</span>
+            </div>
+            <a
+              className="button button-map"
+              href="https://www.google.com/maps/search/?api=1&query=MIHISARU%20Resource%20Management%20Centre%20Thumbowila%20Karadiyana%20Piliyandala%20Sri%20Lanka"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Open in Google Maps
+            </a>
+          </Reveal>
+          <Reveal className="map-embed">
+            <button
+              className="map-expand-trigger"
+              type="button"
+              aria-label="Enlarge map"
+              aria-haspopup="dialog"
+              aria-expanded={isMapExpanded}
+              onClick={() => setIsMapExpanded(true)}
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 17 17 7" />
+                <path d="M9 7h8v8" />
+                <path d="M15 17H7V9" />
+              </svg>
+            </button>
+            <img
+              src="/assets/map.webp"
+              alt="Map showing the Karadiyana project site and surrounding area"
+              loading="lazy"
+            />
+          </Reveal>
+        </section>
+
+        <section className="learn-section" id="learn-with-us" aria-labelledby="learn-title">
+          <Reveal className="learn-banner">
+            <img
+              className="learn-banner-img"
+              src="/assets/learn.webp"
+              alt="Site analysis map of Karadiyana landfill and surrounding community structure"
+              loading="lazy"
+              decoding="async"
+            />
+            <div className="learn-banner-veil" aria-hidden="true" />
+            <div className="learn-banner-copy">
+              <p className="eyebrow">Learn With Us</p>
+              <h2 id="learn-title">Read the ground like an open classroom</h2>
+              <p>
+                The project turns technical landfill recovery into public knowledge. Students, residents,
+                researchers, and visitors can learn how waste systems, water, heat, planting, and community
+                stewardship connect inside one landscape.
+              </p>
+            </div>
+          </Reveal>
+          <div className="learn-cards-section">
+            <p className="learning-intro">Four ways to study how a damaged ground becomes a living system.</p>
+            <div className="learning-grid" aria-label="Learning experiences">
+              {[
+                ["01", "Route", "Field Walks", "Guided routes explain landfill layers, wetland buffers, planting zones, and safe public access."],
+                ["02", "Habitat", "Flora and Fauna", "Observe pioneer plants, wetland vegetation, bird movement, insects, and habitat patches as biodiversity returns."],
+                ["03", "Cycle", "Waste Recycling", "Learn how waste separation, material recovery, reuse, and recycling reduce pressure on landfill systems."],
+                ["04", "Studio", "Research Studio", "Mapping, monitoring, and design exercises help improve the project through evidence."]
+              ].map(([number, kicker, title, text]) => (
+                <article className="learning-card reveal" key={title}>
+                  <div className="learning-card-top">
+                    <span className="learning-card-number">{number}</span>
+                    <span className="learning-card-kicker">{kicker}</span>
+                  </div>
+                  <h3>{title}</h3>
+                  <p>{text}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="terrain-lab section-dark" id="opportunities" aria-labelledby="opportunities-title">
+          <Reveal className="terrain-copy">
+            <p className="eyebrow">Opportunities</p>
+            <h2 id="opportunities-title">Join the regeneration network</h2>
+            <p>
+              The recovered landscape can support research, park management, waste management, and private
+              partnerships. Select a marker to see how each opportunity can help the site work over time.
+            </p>
+          </Reveal>
+          <Reveal className="terrain-stage">
+            <div className="terrain-canvas">
+              <svg className="terrain-svg" viewBox="0 0 900 420" role="img" aria-labelledby="terrain-svg-title terrain-svg-desc">
+                <title id="terrain-svg-title">Abstract terrain section of the Karadiyana landfill</title>
+                <desc id="terrain-svg-desc">A stylized landfill mound beside wetland water, forest patches, trails, and emission pipes.</desc>
+                <path className="water" d="M0 330 C120 315 200 360 310 335 C430 305 500 350 640 326 C740 310 820 335 900 315 L900 420 L0 420 Z" />
+                <path className="ground" d="M0 300 C80 280 125 250 180 244 C245 236 280 160 350 146 C430 127 510 210 580 192 C670 168 725 198 790 220 C835 236 870 238 900 232 L900 420 L0 420 Z" />
+                <path className="cap" d="M130 256 C214 230 262 185 333 165 C410 142 486 214 568 201 C661 186 724 207 815 234" />
+                <path className="trail" d="M125 281 C214 255 305 230 375 229 C472 228 516 264 610 250 C686 238 745 247 823 234" />
+                <g className="pipes"><path d="M340 155 L340 86" /><path d="M462 178 L462 92" /><path d="M589 193 L589 114" /></g>
+                <g className="trees"><path d="M208 236 l-15 -34 l-15 34 h11 l-11 25 h30 l-11 -25z" /><path d="M704 204 l-17 -42 l-17 42 h13 l-14 31 h35 l-13 -31z" /><path d="M760 220 l-13 -32 l-13 32 h10 l-11 25 h28 l-11 -25z" /><path d="M270 200 l-12 -28 l-12 28 h9 l-9 21 h25 l-9 -21z" /></g>
+                <g className="reeds"><path d="M52 325 C45 300 42 283 48 265" /><path d="M74 322 C70 294 78 280 90 262" /><path d="M102 328 C95 300 95 284 105 266" /><path d="M826 318 C819 296 823 278 836 260" /><path d="M852 318 C850 296 856 282 870 266" /></g>
+              </svg>
+              {hotspotData.map((hotspot) => (
+                <button
+                  className={`hotspot ${activeMarker === hotspot.id ? "active" : ""}`}
+                  type="button"
+                  key={hotspot.id}
+                  style={{ "--x": hotspot.x, "--y": hotspot.y }}
+                  onClick={() => setActiveMarker(hotspot.id)}
+                >
+                  {hotspot.label}
+                </button>
+              ))}
+            </div>
+            <div className="marker-card" aria-live="polite">
+              <span>{marker.kicker}</span>
+              <h3>{marker.title}</h3>
+              <p>{marker.text}</p>
+              {marker.sections?.map((section) => (
+                <div className="marker-section" key={section.title}>
+                  <h4>{section.title}</h4>
+                  <ul className="marker-list">
+                    {section.items.map((item) => (
+                      <li key={item.title}>
+                        <strong>{item.title}</strong>
+                        {item.text ? <p>{item.text}</p> : null}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </Reveal>
         </section>
 
         <section className="intro-band project-band" id="about" aria-label="Project summary">
@@ -570,78 +782,32 @@ function App() {
                 <span>01</span>
                 <p>Vision</p>
               </div>
-              <div className="project-section-copy">
-                <h3>Reduce. Cool. Reuse.</h3>
-                <p>
-                  A damaged waste mound becomes a climate-responsive community forest for learning,
-                  ecological recovery, and long-term public care.
-                </p>
-                <p>
-                  The vision is not to hide the landfill behind a finished park image. It is to make the
-                  process of recovery visible: waste is controlled, heat is softened through canopy and
-                  wetland edges, and public life returns only where the ground can safely support it.
-                </p>
-                <div className="vision-actions" aria-label="Project vision actions">
-                  <span>Reduce landfill impact</span>
-                  <span>Cool exposed ground</span>
-                  <span>Reuse through learning</span>
+              <div className="project-vision-grid">
+                <div className="project-section-copy">
+                  <h3>Reduce. Cool. Reuse.</h3>
+                  <p>
+                    A damaged waste mound becomes a climate-responsive community forest for learning,
+                    ecological recovery, and long-term public care.
+                  </p>
+                  <p>
+                    The vision is not to hide the landfill behind a finished park image. It is to make the
+                    process of recovery visible: waste is controlled, heat is softened through canopy and
+                    wetland edges, and public life returns only where the ground can safely support it.
+                  </p>
+                  <div className="vision-actions" aria-label="Project vision actions">
+                    <span>Reduce landfill impact</span>
+                    <span>Cool exposed ground</span>
+                    <span>Reuse through learning</span>
+                  </div>
                 </div>
-              </div>
-            </section>
-
-            <section className="project-main-section project-development reveal">
-              <div className="project-section-heading">
-                <span>02</span>
-                <p>Development Plan</p>
-                <figure className="plan-plate">
+                <figure className="project-vision-figure">
                   <img
-                    src="/assets/report-page-20.webp"
-                    alt="Development plan drawing for the phased transformation of Karadiyana landfill"
+                    src="/assets/reduce-cool-reuse-card.webp"
+                    alt="Concept diagram showing reduce, cool, and reuse strategies transforming the landfill into a healthier public landscape"
                     loading="lazy"
                     decoding="async"
                   />
-                  <figcaption>
-                    <strong>From waste mound to community forest</strong>
-                    <span>Control, repair, access, and long-term care move together.</span>
-                  </figcaption>
-                  <div className="plan-plate-phases" aria-label="Development plan sequence">
-                    <b>Stabilize</b>
-                    <b>Recover</b>
-                    <b>Open</b>
-                    <b>Maintain</b>
-                  </div>
                 </figure>
-              </div>
-              <div className="project-section-copy">
-                <h3>Control first, open carefully.</h3>
-                <p>
-                  The plan works in stages because the landfill must be made stable before it can become
-                  an everyday public landscape. Each stage reduces risk, strengthens ecological systems,
-                  and prepares the next layer of access.
-                </p>
-                <p>
-                  The development strategy moves from technical control to ecological repair and then to
-                  public use. This gives the project a realistic order: first stop the most harmful
-                  processes, then create living surfaces, then guide people through selected zones, and
-                  finally build a maintenance culture around the site.
-                </p>
-                <div className="project-detail-grid">
-                  {[
-                    ["Stabilize", "Waste separation, gas control, leachate treatment, landform shaping, and safer landfill edges become the first layer of action."],
-                    ["Recover", "Phytocapping, drainage, constructed wetlands, soil improvement, and resilient planting rebuild the ecological ground."],
-                    ["Open", "Controlled trails, learning stops, viewpoints, community spaces, and managed access introduce public life gradually."],
-                    ["Maintain", "Monitoring, adaptive planting, local stewardship, and public-private management keep the landscape responsive."]
-                  ].map(([title, text]) => (
-                    <article className="project-detail" key={title}>
-                      <h4>{title}</h4>
-                      <p>{text}</p>
-                    </article>
-                  ))}
-                </div>
-                <p className="project-process-note">
-                  This sequence keeps the proposal grounded: public experience follows environmental
-                  performance, not the other way around.
-                </p>
               </div>
             </section>
 
@@ -649,7 +815,7 @@ function App() {
               <div className="designer-grid">
                 <div className="designer-left">
                   <div className="designer-label">
-                    <span>03</span>
+                    <span>02</span>
                     <p>The Designer</p>
                   </div>
                   <span className="designer-tag">Design Student Portfolio</span>
@@ -800,210 +966,6 @@ function App() {
           </div>
         </section>
 
-        <section className="mosaic-section" id="things-to-do" aria-labelledby="things-title">
-          <Reveal className="section-heading">
-            <p className="eyebrow">Things To Do</p>
-            <h2 id="things-title">Move through a recovered landscape</h2>
-            <p>
-              The site is imagined as a careful public landscape where movement, observation, play, art,
-              and ecological recovery sit together. Activities stay guided by safety and landscape care.
-            </p>
-          </Reveal>
-
-          <div className="pillar-grid">
-            {thingsToDoItems.map((item) => (
-              <button
-                className="pillar reveal"
-                type="button"
-                key={item.title}
-                aria-haspopup="dialog"
-                aria-label={`Open details for ${item.title}`}
-                onClick={() => setActiveThingToDo(item)}
-              >
-                <span className="pillar-cta">Click to explore</span>
-                <span className="pillar-number">{item.number}</span>
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
-              </button>
-            ))}
-          </div>
-        </section>
-
-        <section className="learn-section" id="learn-with-us" aria-labelledby="learn-title">
-          <Reveal className="learn-banner">
-            <img
-              className="learn-banner-img"
-              src="/assets/learn.webp"
-              alt="Site analysis map of Karadiyana landfill and surrounding community structure"
-              loading="lazy"
-              decoding="async"
-            />
-            <div className="learn-banner-veil" aria-hidden="true" />
-            <div className="learn-banner-copy">
-              <p className="eyebrow">Learn With Us</p>
-              <h2 id="learn-title">Read the ground like an open classroom</h2>
-              <p>
-                The project turns technical landfill recovery into public knowledge. Students, residents,
-                researchers, and visitors can learn how waste systems, water, heat, planting, and community
-                stewardship connect inside one landscape.
-              </p>
-            </div>
-          </Reveal>
-          <div className="learn-cards-section">
-            <p className="learning-intro">Four ways to study how a damaged ground becomes a living system.</p>
-            <div className="learning-grid" aria-label="Learning experiences">
-              {[
-                ["01", "Route", "Field Walks", "Guided routes explain landfill layers, wetland buffers, planting zones, and safe public access."],
-                ["02", "Habitat", "Flora and Fauna", "Observe pioneer plants, wetland vegetation, bird movement, insects, and habitat patches as biodiversity returns."],
-                ["03", "Cycle", "Waste Recycling", "Learn how waste separation, material recovery, reuse, and recycling reduce pressure on landfill systems."],
-                ["04", "Studio", "Research Studio", "Mapping, monitoring, and design exercises help improve the project through evidence."]
-              ].map(([number, kicker, title, text]) => (
-                <article className="learning-card reveal" key={title}>
-                  <div className="learning-card-top">
-                    <span className="learning-card-number">{number}</span>
-                    <span className="learning-card-kicker">{kicker}</span>
-                  </div>
-                  <h3>{title}</h3>
-                  <p>{text}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="terrain-lab section-dark" id="opportunities" aria-labelledby="opportunities-title">
-          <Reveal className="terrain-copy">
-            <p className="eyebrow">Opportunities</p>
-            <h2 id="opportunities-title">Join the regeneration network</h2>
-            <p>
-              The recovered landscape can support research, park management, waste management, and private
-              partnerships. Select a marker to see how each opportunity can help the site work over time.
-            </p>
-          </Reveal>
-          <Reveal className="terrain-stage">
-            <div className="terrain-canvas">
-              <svg className="terrain-svg" viewBox="0 0 900 420" role="img" aria-labelledby="terrain-svg-title terrain-svg-desc">
-                <title id="terrain-svg-title">Abstract terrain section of the Karadiyana landfill</title>
-                <desc id="terrain-svg-desc">A stylized landfill mound beside wetland water, forest patches, trails, and emission pipes.</desc>
-                <path className="water" d="M0 330 C120 315 200 360 310 335 C430 305 500 350 640 326 C740 310 820 335 900 315 L900 420 L0 420 Z" />
-                <path className="ground" d="M0 300 C80 280 125 250 180 244 C245 236 280 160 350 146 C430 127 510 210 580 192 C670 168 725 198 790 220 C835 236 870 238 900 232 L900 420 L0 420 Z" />
-                <path className="cap" d="M130 256 C214 230 262 185 333 165 C410 142 486 214 568 201 C661 186 724 207 815 234" />
-                <path className="trail" d="M125 281 C214 255 305 230 375 229 C472 228 516 264 610 250 C686 238 745 247 823 234" />
-                <g className="pipes"><path d="M340 155 L340 86" /><path d="M462 178 L462 92" /><path d="M589 193 L589 114" /></g>
-                <g className="trees"><path d="M208 236 l-15 -34 l-15 34 h11 l-11 25 h30 l-11 -25z" /><path d="M704 204 l-17 -42 l-17 42 h13 l-14 31 h35 l-13 -31z" /><path d="M760 220 l-13 -32 l-13 32 h10 l-11 25 h28 l-11 -25z" /><path d="M270 200 l-12 -28 l-12 28 h9 l-9 21 h25 l-9 -21z" /></g>
-                <g className="reeds"><path d="M52 325 C45 300 42 283 48 265" /><path d="M74 322 C70 294 78 280 90 262" /><path d="M102 328 C95 300 95 284 105 266" /><path d="M826 318 C819 296 823 278 836 260" /><path d="M852 318 C850 296 856 282 870 266" /></g>
-              </svg>
-              {hotspotData.map((hotspot) => (
-                <button
-                  className={`hotspot ${activeMarker === hotspot.id ? "active" : ""}`}
-                  type="button"
-                  key={hotspot.id}
-                  style={{ "--x": hotspot.x, "--y": hotspot.y }}
-                  onClick={() => setActiveMarker(hotspot.id)}
-                >
-                  {hotspot.label}
-                </button>
-              ))}
-            </div>
-            <div className="marker-card" aria-live="polite">
-              <span>{marker.kicker}</span>
-              <h3>{marker.title}</h3>
-              <p>{marker.text}</p>
-              {marker.sections?.map((section) => (
-                <div className="marker-section" key={section.title}>
-                  <h4>{section.title}</h4>
-                  <ul className="marker-list">
-                    {section.items.map((item) => (
-                      <li key={item.title}>
-                        <strong>{item.title}</strong>
-                        {item.text ? <p>{item.text}</p> : null}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-        </section>
-
-        <section className="location-section" id="map" aria-labelledby="map-title">
-          <Reveal className="location-copy">
-            <p className="eyebrow">Map</p>
-            <h2 id="map-title">Find the ground where recovery begins</h2>
-            <p>
-              The project site sits at Thumbowila, Karadiyana, Piliyandala, within the Colombo
-              metropolitan edge where landfill operations, wetland systems, residential communities,
-              and regional movement corridors meet.
-            </p>
-            <div className="location-facts" aria-label="Location facts">
-              <span>Thumbowila, Karadiyana</span>
-              <span>Piliyandala, Sri Lanka</span>
-              <span>Near Bolgoda watershed</span>
-            </div>
-            <a
-              className="button button-map"
-              href="https://www.google.com/maps/search/?api=1&query=MIHISARU%20Resource%20Management%20Centre%20Thumbowila%20Karadiyana%20Piliyandala%20Sri%20Lanka"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Open in Google Maps
-            </a>
-          </Reveal>
-          <Reveal className="map-embed">
-            <button
-              className="map-expand-trigger"
-              type="button"
-              aria-label="Enlarge map"
-              aria-haspopup="dialog"
-              aria-expanded={isMapExpanded}
-              onClick={() => setIsMapExpanded(true)}
-            >
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M7 17 17 7" />
-                <path d="M9 7h8v8" />
-                <path d="M15 17H7V9" />
-              </svg>
-            </button>
-            <img
-              src="/assets/map.webp"
-              alt="Map showing the Karadiyana project site and surrounding area"
-              loading="lazy"
-            />
-          </Reveal>
-        </section>
-
-        <section className="strategy-gallery" id="news" aria-labelledby="news-title">
-          <Reveal className="section-heading">
-            <p className="eyebrow">News</p>
-            <h2 id="news-title">Project gallery</h2>
-          </Reveal>
-          <Reveal className="gallery-slider">
-            <div className="gallery-slider-frame">
-              {gallerySlides.map(([image, alt], index) => (
-                <img
-                  className={`gallery-slide ${activeGallerySlide === index ? "active" : ""}`}
-                  src={image}
-                  alt={alt}
-                  loading="lazy"
-                  decoding="async"
-                  key={image}
-                />
-              ))}
-            </div>
-            <div className="gallery-slider-dots" aria-label="Gallery navigation">
-              {gallerySlides.map((_, index) => (
-                <button
-                  className={`gallery-slider-dot ${activeGallerySlide === index ? "active" : ""}`}
-                  type="button"
-                  key={index}
-                  aria-label={`Show slide ${index + 1}`}
-                  onClick={() => setActiveGallerySlide(index)}
-                />
-              ))}
-            </div>
-          </Reveal>
-        </section>
-
         <section className="phases-section" id="future" aria-labelledby="future-title">
           <Reveal className="section-heading">
             <p className="eyebrow">Future</p>
@@ -1126,7 +1088,7 @@ function App() {
 
       <footer className="site-footer">
         <p>Comprehensive Design Project 2026 - Bachelor of Landscape Architecture Honours - University of Moratuwa</p>
-        <p>Nethma Jayanetti - 212920A</p>
+        <p>Nethma Jayanetti</p>
       </footer>
     </>
   );
