@@ -224,8 +224,6 @@ const gallerySlides = [
   ]
 ];
 
-const mapImageSrc = "/assets/map.webp";
-
 const wasteCollectionData = [
   { label: "Dehiwala - Mt. Lavinia MC", value: 179, color: "#c1ae92" },
   { label: "Moratuwa MC", value: 126, color: "#9cb07b" },
@@ -311,7 +309,6 @@ function App() {
   const [activeMarker, setActiveMarker] = useState("heat");
   const [activePhase, setActivePhase] = useState(0);
   const [isMapExpanded, setIsMapExpanded] = useState(false);
-  const [isMapImageReady, setIsMapImageReady] = useState(false);
   const [activeThingToDo, setActiveThingToDo] = useState(null);
   const [activeGallerySlide, setActiveGallerySlide] = useState(0);
   const [isHeroVideoLoading, setIsHeroVideoLoading] = useState(true);
@@ -329,28 +326,6 @@ function App() {
     ],
     []
   );
-
-  useEffect(() => {
-    let isActive = true;
-    const preloadMapImage = new Image();
-    const markMapReady = () => {
-      if (isActive) setIsMapImageReady(true);
-    };
-
-    preloadMapImage.onload = markMapReady;
-    preloadMapImage.onerror = markMapReady;
-    preloadMapImage.src = mapImageSrc;
-
-    if (preloadMapImage.complete) {
-      markMapReady();
-    }
-
-    return () => {
-      isActive = false;
-      preloadMapImage.onload = null;
-      preloadMapImage.onerror = null;
-    };
-  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -645,7 +620,7 @@ function App() {
               Open in Google Maps
             </a>
           </Reveal>
-          <Reveal className={`map-embed${isMapImageReady ? " is-loaded" : ""}`}>
+          <Reveal className="map-embed">
             <button
               className="map-expand-trigger"
               type="button"
@@ -660,19 +635,10 @@ function App() {
                 <path d="M15 17H7V9" />
               </svg>
             </button>
-            {!isMapImageReady ? (
-              <div className="map-loader" aria-live="polite">
-                <span className="map-loader-ring" aria-hidden="true" />
-                <span className="map-loader-text">Loading the map</span>
-              </div>
-            ) : null}
             <img
-              src={mapImageSrc}
+              src="/assets/map.webp"
               alt="Map showing the Karadiyana project site and surrounding area"
               loading="lazy"
-              decoding="async"
-              onLoad={() => setIsMapImageReady(true)}
-              onError={() => setIsMapImageReady(true)}
             />
           </Reveal>
         </section>
@@ -1109,20 +1075,11 @@ function App() {
                 Close
               </button>
             </div>
-            <div className={`map-lightbox-frame${isMapImageReady ? " is-loaded" : ""}`}>
-              {!isMapImageReady ? (
-                <div className="map-loader map-loader-lightbox" aria-live="polite">
-                  <span className="map-loader-ring" aria-hidden="true" />
-                  <span className="map-loader-text">Loading the map</span>
-                </div>
-              ) : null}
+            <div className="map-lightbox-frame">
               <img
-                src={mapImageSrc}
+                src="/assets/map.webp"
                 alt="Map showing the Karadiyana project site and surrounding area"
                 loading="eager"
-                decoding="async"
-                onLoad={() => setIsMapImageReady(true)}
-                onError={() => setIsMapImageReady(true)}
               />
             </div>
           </div>
