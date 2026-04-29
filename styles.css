@@ -1819,6 +1819,7 @@ section h2 {
 
 .map-embed {
   position: relative;
+  aspect-ratio: 8157 / 7016;
   border: 1px solid rgba(76, 103, 87, 0.18);
   border-radius: 8px;
   overflow: hidden;
@@ -1866,10 +1867,47 @@ section h2 {
 
 .map-embed img {
   width: 100%;
-  height: auto;
+  height: 100%;
   display: block;
   object-fit: cover;
   object-position: center;
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+.map-embed.is-loaded img,
+.map-lightbox-frame.is-loaded img {
+  opacity: 1;
+}
+
+.map-loader {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  gap: 12px;
+  align-content: center;
+  color: var(--deep-green);
+  background:
+    linear-gradient(180deg, rgba(243, 241, 236, 0.94), rgba(243, 241, 236, 0.9)),
+    var(--paper);
+}
+
+.map-loader-ring {
+  width: 52px;
+  height: 52px;
+  border: 2px solid rgba(76, 103, 87, 0.18);
+  border-top-color: var(--leaf);
+  border-radius: 50%;
+  animation: hero-spin 1s linear infinite;
+}
+
+.map-loader-text {
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .map-lightbox {
@@ -1944,6 +1982,7 @@ section h2 {
 }
 
 .map-lightbox-frame {
+  position: relative;
   min-height: 0;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
@@ -1956,6 +1995,16 @@ section h2 {
   width: 100%;
   height: auto;
   min-width: 960px;
+  display: block;
+}
+
+.map-loader-lightbox {
+  position: sticky;
+  inset: 0;
+  min-height: min(70vh, 820px);
+  background:
+    linear-gradient(180deg, rgba(243, 241, 236, 0.96), rgba(243, 241, 236, 0.92)),
+    var(--paper);
 }
 
 .terrain-lab {

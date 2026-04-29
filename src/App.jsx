@@ -309,6 +309,7 @@ function App() {
   const [activeMarker, setActiveMarker] = useState("heat");
   const [activePhase, setActivePhase] = useState(0);
   const [isMapExpanded, setIsMapExpanded] = useState(false);
+  const [isMapImageReady, setIsMapImageReady] = useState(false);
   const [activeThingToDo, setActiveThingToDo] = useState(null);
   const [activeGallerySlide, setActiveGallerySlide] = useState(0);
   const [isHeroVideoLoading, setIsHeroVideoLoading] = useState(true);
@@ -620,7 +621,7 @@ function App() {
               Open in Google Maps
             </a>
           </Reveal>
-          <Reveal className="map-embed">
+          <Reveal className={`map-embed${isMapImageReady ? " is-loaded" : ""}`}>
             <button
               className="map-expand-trigger"
               type="button"
@@ -635,10 +636,19 @@ function App() {
                 <path d="M15 17H7V9" />
               </svg>
             </button>
+            {!isMapImageReady ? (
+              <div className="map-loader" aria-live="polite">
+                <span className="map-loader-ring" aria-hidden="true" />
+                <span className="map-loader-text">Map loading</span>
+              </div>
+            ) : null}
             <img
               src="/assets/map.webp"
               alt="Map showing the Karadiyana project site and surrounding area"
               loading="lazy"
+              decoding="async"
+              onLoad={() => setIsMapImageReady(true)}
+              onError={() => setIsMapImageReady(true)}
             />
           </Reveal>
         </section>
@@ -1075,11 +1085,20 @@ function App() {
                 Close
               </button>
             </div>
-            <div className="map-lightbox-frame">
+            <div className={`map-lightbox-frame${isMapImageReady ? " is-loaded" : ""}`}>
+              {!isMapImageReady ? (
+                <div className="map-loader map-loader-lightbox" aria-live="polite">
+                  <span className="map-loader-ring" aria-hidden="true" />
+                  <span className="map-loader-text">Map loading</span>
+                </div>
+              ) : null}
               <img
                 src="/assets/map.webp"
                 alt="Map showing the Karadiyana project site and surrounding area"
                 loading="eager"
+                decoding="async"
+                onLoad={() => setIsMapImageReady(true)}
+                onError={() => setIsMapImageReady(true)}
               />
             </div>
           </div>
