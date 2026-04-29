@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import mainLogo from "../assets/Untitled design (1).png";
 
 const markers = {
   heat: {
@@ -272,8 +273,9 @@ function Header() {
   return (
     <header className={`site-header ${isScrolled ? "scrolled" : ""}`} aria-label="Primary navigation">
       <a className="brand" href="#top" aria-label="Regrounding the Landfill home">
-        <span className="brand-mark" />
-        <span>Regrounding</span>
+        <span className="brand-logo-frame" aria-hidden="true">
+          <img className="brand-logo" src={mainLogo} alt="Karadiyana Forest Management" />
+        </span>
       </a>
       <button
         className="menu-toggle"
